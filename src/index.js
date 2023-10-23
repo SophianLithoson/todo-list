@@ -1,6 +1,6 @@
 console.log("testing it's working");
 
-import daysFromNow from "./date-fns-wrapper.js";
+import {daysFromNow} from "./date-fns-wrapper.js";
 
 const SOON_IN_DAYS = 3;
 
@@ -44,5 +44,24 @@ const SOON_IN_DAYS = 3;
     deleteTask(task) {
         this.taskList.splice(taskList.indexOf(task), 1);
     }
+
+    getAllTasksNodes() {
+        for (let i = 0; this.taskList[i]; i++) {
+            this.taskList[i].getDisplayNode();
+        }
+    }
  }
+
+// const todoPage = (() => {
+    const defaultDueDate = new Date("2023-12-30");
+    const defaultProject = new Project("Default", "This is the default project", defaultDueDate);
+
+    const testTask = new Task("Test Task", "This is a test that my classes are working", defaultDueDate, 2);
+    defaultProject.addTask(testTask);
+    defaultProject.getAllTasksNodes();
+
+    const testTaskTwo = new Task("Test Task 2", "Making sure methods all work", defaultDueDate, 3);
+    defaultProject.addTask(testTaskTwo);
+    defaultProject.getAllTasksNodes();
+// })();
 
