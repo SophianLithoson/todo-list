@@ -3,6 +3,28 @@
     margin: 0;
 }
 
+body {
+    max-width: 1400px;
+}
+
+@media screen and (min-width: 750px) {
+    :root {
+        font-size: 1.2rem;
+    }
+}
+
+@media screen and (min-width: 1000px) {
+    :root {
+        font-size: 1.35rem;
+    }
+}
+
+@media screen and (min-width: 1250px) {
+    :root {
+        font-size: 1.5rem;
+    }
+}
+
 a {
     color: inherit;
 }
@@ -14,9 +36,47 @@ li {
 header {
     background-color: rgb(35, 35, 109);
     color:aliceblue;
+    display: flex;
+}
+
+.header-title {
+    margin: 4px auto;
 }
 
 nav {
     background-color: rgb(60, 60, 145);
     color:aliceblue;
+    padding: 1rem;
+    height: 100vh;
+}
+
+.nav-main-flex {
+    display: flex;
+}
+
+.time-filtered-container {
+    margin-bottom: 1rem;
+    border-bottom: 1px solid grey;
+}
+
+main {
+    padding: 1rem;
+    width: 100%;
+}
+
+
+.todo {
+    background-color: aliceblue;
+    color: rgb(0, 0, 54);
+    display: flex;
+    font-size: 0.9rem;
+    margin: 0.2rem auto;
+    padding: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+}
+
+.todo-description {
+    margin-right: auto;
 }

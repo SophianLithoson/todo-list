@@ -6,13 +6,40 @@
     <title>Document</title>
 </head>
 <body>
-    <header>TO-DO LIST</header>
-    <nav>
-        <ul class="project-container"></ul>
-    </nav>
-    <main>
-        <div class="todo-container"></div>
-    </main>
+    <header>
+        <div class="header-title">
+            <h1>TO-DO LIST</h1>
+        </div>
+    </header>
+    <div class="nav-main-flex">
+        <nav>
+            <ul class="time-filtered-container">
+                <li>Due Today</li>
+                <li>This Week</li>
+                <li>This Month</li>
+            </ul>
+            <h2>Projects</h2>
+            <ul class="project-container">
+                <li>Test Project</li>
+                <li>Test Project #2</li>
+            </ul>
+        </nav>
+        <main>
+            <div class="todo-container">
+                <div class="todo">
+                    <input type="checkbox">
+                    <span class="todo-description">Test</span>
+                    <button>Show More</button>
+                    <p>12-20-2000</p>
+                    <p>E</p>
+                    <p>D</p>
+                </div>
+                <div class="todo"><p>Best</p></div>
+                <div class="todo"><p>Rest</p></div>
+                <div class="todo"><p>Pest</p></div>
+            </div>
+        </main>
+    </div>
     <script src="./main.js" defer></script>
 </body>
 </html>
