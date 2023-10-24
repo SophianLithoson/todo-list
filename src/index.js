@@ -1,11 +1,12 @@
 console.log("testing it's working");
 
 import {daysFromNow} from "./date-fns-wrapper.js";
+import "./style.css";
 
 const SOON_IN_DAYS = 3;
 
 
- class Task {
+class Task {
     constructor(title, description, dueDate, priority) {
         this.title = title;
         this.description = description;
@@ -26,9 +27,9 @@ const SOON_IN_DAYS = 3;
     isPastDue() {
         return daysFromNow(this.dueDate) < 0 ? true : false;
     }
- }
+}
 
- class Project {
+class Project {
     constructor(title, description, dueDate) {
         this.title = title;
         this.description = description;
@@ -50,9 +51,9 @@ const SOON_IN_DAYS = 3;
             this.taskList[i].getDisplayNode();
         }
     }
- }
+}
 
-// const todoPage = (() => {
+const todoPage = (() => {
     const defaultDueDate = new Date("2023-12-30");
     const defaultProject = new Project("Default", "This is the default project", defaultDueDate);
 
@@ -63,5 +64,5 @@ const SOON_IN_DAYS = 3;
     const testTaskTwo = new Task("Test Task 2", "Making sure methods all work", defaultDueDate, 3);
     defaultProject.addTask(testTaskTwo);
     defaultProject.getAllTasksNodes();
-// })();
+})();
 
