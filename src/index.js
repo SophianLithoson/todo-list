@@ -17,7 +17,28 @@ class Task {
     }
 
     getDisplayNode() {
-        console.log(this);
+        const todoNode = Object.assign(document.createElement("div"), {classList: "todo"});
+        const todoCheckbox = Object.assign(document.createElement("input"), {type: "checkbox"});
+        const todoTitle = Object.assign(document.createElement("span"), {classList: "todo-title"});
+        const showMoreButton = Object.assign(document.createElement("button"), {innerHTML: "Show More"});
+        const todoDate = document.createElement("p");
+        const editButton = document.createElement("p");
+        const deleteButton = document.createElement("p");
+
+        if (this.completed) {
+            todoCheckbox.checked = true;
+        }
+        todoTitle.textContent = this.description;
+        todoDate.textContent = this.dueDate;
+
+        todoNode.appendChild(todoCheckbox);
+        todoNode.appendChild(todoTitle);
+        todoNode.appendChild(showMoreButton);
+        todoNode.appendChild(todoDate);
+        todoNode.appendChild(editButton);
+        todoNode.appendChild(deleteButton);
+
+        return todoNode;        
     }
 
     isDueSoon() {
@@ -59,10 +80,11 @@ const todoPage = (() => {
 
     const testTask = new Task("Test Task", "This is a test that my classes are working", defaultDueDate, 2);
     defaultProject.addTask(testTask);
-    defaultProject.getAllTasksNodes();
-
     const testTaskTwo = new Task("Test Task 2", "Making sure methods all work", defaultDueDate, 3);
     defaultProject.addTask(testTaskTwo);
-    defaultProject.getAllTasksNodes();
+
+    const todoContainerNode = document.getElementsByClassName("todo-container");
+    todoContainerNode.appendChild(testTask.getDisplayNode());
+    todoContainerNode.appendChild(testTaskTwo.getDisplayNode());
 })();
 
