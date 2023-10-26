@@ -83,7 +83,7 @@ const todoPage = (() => {
     const testTaskTwo = new Task("Test Task 2", "Making sure methods all work", defaultDueDate, 3);
     defaultProject.addTask(testTaskTwo);
 
-    const todoContainerNode = document.getElementsByClassName("todo-container");
+    const todoContainerNode = document.getElementById("todo-container");
     todoContainerNode.appendChild(testTask.getDisplayNode());
     todoContainerNode.appendChild(testTaskTwo.getDisplayNode());
 })();
