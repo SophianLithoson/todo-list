@@ -1,11 +1,16 @@
 const path = require("path");
 
 module.exports = {
-    mode: "production",
-    entry: "./src/index.js",
+    mode: "development",
+    entry: {
+        index: "./src/index.js",
+        dateFNSWrapper: "./src/date-fns-wrapper.js",
+    },
+    devtool: "inline-source-map",
     output: {
-        filename: "main.js",
+        filename: "[name].bundle.js",
         path: path.resolve(__dirname, "dist"),
+        clean: true,
     },
     module: {
         rules: [
