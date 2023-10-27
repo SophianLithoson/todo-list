@@ -109,7 +109,7 @@ function displayProjectTasks(project) {
 }
 
 const todoPage = (() => {
-    const defaultDueDate = new Date("2023-12-30");
+    const defaultDueDate = new Date(2023, 11, 30);
     const defaultProject = new Project("Default", "This is the default project", defaultDueDate);
     const projectList = [];
 
