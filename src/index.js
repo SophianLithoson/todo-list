@@ -17,30 +17,30 @@ class Task {
     }
 
     getDisplayNode() {
-        const todoNode = Object.assign(document.createElement("div"), {classList: "todo"});
-        const todoCheckbox = Object.assign(document.createElement("input"), {type: "checkbox"});
-        const todoTitle = Object.assign(document.createElement("span"), {classList: "todo-title"});
-        const showMoreButton = Object.assign(document.createElement("button"), {innerHTML: "Show More"});
-        const todoDate = document.createElement("p");
-        const editButton = document.createElement("p");
-        const deleteButton = document.createElement("p");
+        const _todoNode = Object.assign(document.createElement("div"), {classList: "todo"});
+        const _todoCheckbox = Object.assign(document.createElement("input"), {type: "checkbox"});
+        const _todoTitle = Object.assign(document.createElement("span"), {classList: "todo-title"});
+        const _showMoreButton = Object.assign(document.createElement("button"), {innerHTML: "Show More"});
+        const _todoDate = document.createElement("p");
+        const _editButton = document.createElement("p");
+        const _deleteButton = document.createElement("p");
 
         if (this.completed) {
-            todoCheckbox.checked = true;
+            _todoCheckbox.checked = true;
         }
-        todoTitle.textContent = this.description;
-        todoDate.textContent = formatDate(this.dueDate);
-        editButton.textContent = "E";
-        deleteButton.textContent = "D";
+        _todoTitle.textContent = this.description;
+        _todoDate.textContent = formatDate(this.dueDate);
+        _editButton.textContent = "E";
+        _deleteButton.textContent = "D";
 
-        todoNode.appendChild(todoCheckbox);
-        todoNode.appendChild(todoTitle);
-        todoNode.appendChild(showMoreButton);
-        todoNode.appendChild(todoDate);
-        todoNode.appendChild(editButton);
-        todoNode.appendChild(deleteButton);
+        _todoNode.appendChild(_todoCheckbox);
+        _todoNode.appendChild(_todoTitle);
+        _todoNode.appendChild(_showMoreButton);
+        _todoNode.appendChild(_todoDate);
+        _todoNode.appendChild(_editButton);
+        _todoNode.appendChild(_deleteButton);
 
-        return todoNode;        
+        return _todoNode;        
     }
 
     isDueSoon() {
@@ -70,9 +70,13 @@ class Project {
     }
 
     getAllTasksNodes() {
+        const _taskNodes = [];
+
         for (let i = 0; this.taskList[i]; i++) {
-            this.taskList[i].getDisplayNode();
+            _taskNodes.push(this.taskList[i].getDisplayNode());
         }
+
+        return _taskNodes;
     }
 }
 
@@ -86,6 +90,9 @@ const todoPage = (() => {
     defaultProject.addTask(testTaskTwo);
 
     const todoContainerNode = document.getElementById("todo-container");
-    todoContainerNode.appendChild(testTask.getDisplayNode());
-    todoContainerNode.appendChild(testTaskTwo.getDisplayNode());
+    const projectTaskNodes = defaultProject.getAllTasksNodes();
+    
+    for (let i = 0; projectTaskNodes[i]; i++) {
+        todoContainerNode.appendChild(projectTaskNodes[i]);
+    }
 })();
