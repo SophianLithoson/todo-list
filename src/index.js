@@ -73,26 +73,51 @@ class Project {
         const _taskNodes = [];
 
         for (let i = 0; this.taskList[i]; i++) {
-            _taskNodes.push(this.taskList[i].getDisplayNode());
+            _taskNodes.push(this.taskList[i].getDisplayNode()); 
         }
 
         return _taskNodes;
+    }
+
+    getProjectHeaderNodes() {
+        const _projectTitle = document.createElement("h2");
+        const _projectDescription = document.createElement("p");
+        const _projectHeaderSet = [];
+
+        _projectTitle.textContent = this.title;
+        _projectDescription.textContent = this.description;
+        _projectHeaderSet.push(_projectTitle);
+        _projectHeaderSet.push(_projectDescription);
+
+        return _projectHeaderSet;
+    }
+}
+
+function displayProjectTasks(project) {
+    const projectHeaderNode = document.getElementById("project-header");
+    const todoContainerNode = document.getElementById("todo-container");
+    const projectTaskNodes = project.getAllTasksNodes();
+    const projectHeaderSet = project.getProjectHeaderNodes();
+
+    for (let _i = 0; projectHeaderSet[_i]; _i++) {
+        projectHeaderNode.appendChild(projectHeaderSet[_i]);
+    }
+
+    for (let _j = 0; projectTaskNodes[_j]; _j++) {
+        todoContainerNode.appendChild(projectTaskNodes[_j]);
     }
 }
 
 const todoPage = (() => {
     const defaultDueDate = new Date("2023-12-30");
     const defaultProject = new Project("Default", "This is the default project", defaultDueDate);
+    const projectList = [];
 
     const testTask = new Task("Test Task", "This is a test that my classes are working", defaultDueDate, 2);
     defaultProject.addTask(testTask);
     const testTaskTwo = new Task("Test Task 2", "Making sure methods all work", defaultDueDate, 3);
     defaultProject.addTask(testTaskTwo);
+    projectList.push(defaultProject);
 
-    const todoContainerNode = document.getElementById("todo-container");
-    const projectTaskNodes = defaultProject.getAllTasksNodes();
-    
-    for (let i = 0; projectTaskNodes[i]; i++) {
-        todoContainerNode.appendChild(projectTaskNodes[i]);
-    }
+    displayProjectTasks(projectList[0]);
 })();
