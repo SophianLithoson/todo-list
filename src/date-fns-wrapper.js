@@ -1,5 +1,6 @@
 import formatDistanceToNowStrict from "date-fns/formatDistanceToNowStrict";
 import isFuture from "date-fns/isFuture";
+import format from "date-fns/format";
 
 function daysFromNow(date) {
     const resultString = formatDistanceToNowStrict(date, {unit: "day", roundingMethod: "ceil"});
@@ -12,4 +13,9 @@ function daysFromNow(date) {
     
 }
 
-export {daysFromNow};
+function formatDate(date) {
+    const formattedDate = format(date, "MM/dd/yyyy");
+    return formattedDate;
+}
+
+export {daysFromNow, formatDate};

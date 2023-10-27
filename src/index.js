@@ -1,6 +1,6 @@
 console.log("testing it's working");
 
-import {daysFromNow} from "./date-fns-wrapper.js";
+import {daysFromNow, formatDate} from "./date-fns-wrapper.js";
 import "./style.css";
 
 const SOON_IN_DAYS = 3;
@@ -29,7 +29,9 @@ class Task {
             todoCheckbox.checked = true;
         }
         todoTitle.textContent = this.description;
-        todoDate.textContent = this.dueDate;
+        todoDate.textContent = formatDate(this.dueDate);
+        editButton.textContent = "E";
+        deleteButton.textContent = "D";
 
         todoNode.appendChild(todoCheckbox);
         todoNode.appendChild(todoTitle);
@@ -87,4 +89,3 @@ const todoPage = (() => {
     todoContainerNode.appendChild(testTask.getDisplayNode());
     todoContainerNode.appendChild(testTaskTwo.getDisplayNode());
 })();
-

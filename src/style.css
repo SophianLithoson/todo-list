@@ -69,7 +69,7 @@ main {
     background-color: aliceblue;
     color: rgb(0, 0, 54);
     display: flex;
-    font-size: 0.9rem;
+    font-size: 0.7rem;
     margin: 0.2rem auto;
     padding: 1rem;
     align-items: center;
@@ -77,6 +77,6 @@ main {
     gap: 0.6rem;
 }
 
-.todo-description {
+.todo-title {
     margin-right: auto;
 }
