@@ -77,6 +77,19 @@ main {
     gap: 0.6rem;
 }
 
+button {
+    font-size: inherit;
+    color: aliceblue;
+    background-color: rgb(60, 60, 145);
+    padding: 2px;
+    border-radius: 3px;
+}
+
+button>img {
+    font-size: inherit;
+    color: aliceblue;
+}
+
 .todo-title {
     margin-right: auto;
 }

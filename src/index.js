@@ -2,6 +2,8 @@ console.log("testing it's working");
 
 import {daysFromNow, formatDate} from "./date-fns-wrapper.js";
 import "./style.css";
+import editIconPath from "./edit.svg";
+import deleteIconPath from "./delete.svg";
 
 const SOON_IN_DAYS = 3;
 
@@ -22,16 +24,20 @@ class Task {
         const _todoTitle = Object.assign(document.createElement("span"), {classList: "todo-title"});
         const _showMoreButton = Object.assign(document.createElement("button"), {innerHTML: "Show More"});
         const _todoDate = document.createElement("p");
-        const _editButton = document.createElement("p");
-        const _deleteButton = document.createElement("p");
+        const _editButton = document.createElement("button");
+        const _editButtonIcon = document.createElement("img");
+        const _deleteButton = document.createElement("button");
+        const _deleteButtonIcon = document.createElement("img");
 
         if (this.completed) {
             _todoCheckbox.checked = true;
         }
         _todoTitle.textContent = this.description;
         _todoDate.textContent = formatDate(this.dueDate);
-        _editButton.textContent = "E";
-        _deleteButton.textContent = "D";
+        _editButtonIcon.src = editIconPath;
+        _editButton.appendChild(_editButtonIcon);
+        _deleteButtonIcon.src = deleteIconPath;
+        _deleteButton.appendChild(_deleteButtonIcon);
 
         _todoNode.appendChild(_todoCheckbox);
         _todoNode.appendChild(_todoTitle);
