@@ -2,8 +2,6 @@ console.log("testing it's working");
 
 import {daysFromNow, formatDate} from "./date-fns-wrapper.js";
 import "./style.css";
-import editIconPath from "./edit.svg";
-import deleteIconPath from "./delete.svg";
 
 const SOON_IN_DAYS = 3;
 
@@ -25,18 +23,20 @@ class Task {
         const _showMoreButton = Object.assign(document.createElement("button"), {innerHTML: "Show More"});
         const _todoDate = document.createElement("p");
         const _editButton = document.createElement("button");
-        const _editButtonIcon = document.createElement("img");
+        const _editButtonIcon = document.createElement("span");
         const _deleteButton = document.createElement("button");
-        const _deleteButtonIcon = document.createElement("img");
+        const _deleteButtonIcon = document.createElement("span");
 
         if (this.completed) {
             _todoCheckbox.checked = true;
         }
         _todoTitle.textContent = this.description;
         _todoDate.textContent = formatDate(this.dueDate);
-        _editButtonIcon.src = editIconPath;
+        _editButtonIcon.innerText = "edit";
+        _editButtonIcon.classList = "material-symbols-outlined";
         _editButton.appendChild(_editButtonIcon);
-        _deleteButtonIcon.src = deleteIconPath;
+        _deleteButtonIcon.innerText = "delete";
+        _deleteButtonIcon.classList = "material-symbols-outlined";
         _deleteButton.appendChild(_deleteButtonIcon);
 
         _todoNode.appendChild(_todoCheckbox);

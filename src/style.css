@@ -3,6 +3,16 @@
     margin: 0;
 }
 
+.material-symbols-outlined {
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+
+    font-size: 1.2em;    
+}
+
 body {
     max-width: 1400px;
 }
@@ -81,13 +91,11 @@ button {
     font-size: inherit;
     color: aliceblue;
     background-color: rgb(60, 60, 145);
+    border-color: rgb(35, 35, 109);
     padding: 2px;
     border-radius: 3px;
-}
-
-button>img {
-    font-size: inherit;
-    color: aliceblue;
+    display: flex;
+    place-content: center;
 }
 
 .todo-title {
