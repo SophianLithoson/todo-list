@@ -22,11 +22,49 @@
             </ul>
             <h2>Projects</h2>
             <ul id="project-container"></ul>
+            <button id="add-project-button">Add</button>
         </nav>
         <main>
             <div id="project-header"></div>
             <div id="todo-container"></div>
+            <button id="add-task-button">New Task</button>
         </main>
+        <dialog id="add-task-dialog">
+            <form>
+                <p>
+                    <label>
+                        Title:
+                        <input type="text" id="task-title"/>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        Description:
+                        <input type="text" id="task-description"/>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        Due Date:
+                        <input type="date" id="task-due-date"/>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        Priority:
+                        <select id="task-priority">
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </label>
+                </p>
+                <div>
+                    <button value="cancel" formmethod="dialog">Cancel</button>
+                    <button id="task-confirm-btn" value="default">Confirm</button>
+                </div>
+            </form>
+        </dialog>
     </div>
     <script src="./index.bundle.js" defer></script>
 </body>
