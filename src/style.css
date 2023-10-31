@@ -69,11 +69,18 @@ nav {
     border-bottom: 1px solid grey;
 }
 
+#project-container {
+    margin-bottom: 0.5rem;
+}
+
 main {
     padding: 1rem;
     width: 100%;
 }
 
+#todo-container {
+    margin-bottom: 0.5rem;
+}
 
 .todo {
     background-color: aliceblue;

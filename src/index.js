@@ -1,5 +1,3 @@
-console.log("testing it's working");
-
 import {daysFromNow, formatDate} from "./date-fns-wrapper.js";
 import "./style.css";
 
@@ -84,14 +82,14 @@ class Project {
     getProjectHeaderNodes() {
         const _projectTitle = document.createElement("h2");
         const _projectDescription = document.createElement("p");
-        const _projectHeaderSet = [];
+        const __projectHeaderSet = [];
 
         _projectTitle.textContent = this.title;
         _projectDescription.textContent = this.description;
-        _projectHeaderSet.push(_projectTitle);
-        _projectHeaderSet.push(_projectDescription);
+        __projectHeaderSet.push(_projectTitle);
+        __projectHeaderSet.push(_projectDescription);
 
-        return _projectHeaderSet;
+        return __projectHeaderSet;
     }
 
     getProjectTitleNode() {
@@ -102,33 +100,24 @@ class Project {
     }
 }
 
-function displayProjectTasks(project) {
+const todoPage = (() => {
+    // page nodes
+
+    const addTaskDialog = document.getElementById("add-task-dialog");
+    const taskTitle = document.getElementById("task-title");
+    const taskDescription = document.getElementById("task-description");
+    const taskDueDate = document.getElementById("task-due-date");
+    const taskPriority = document.getElementById("task-priority");
     const projectHeaderNode = document.getElementById("project-header");
     const todoContainerNode = document.getElementById("todo-container");
-    const projectTaskNodes = project.getAllTasksNodes();
-    const projectHeaderSet = project.getProjectHeaderNodes();
-
-    for (let _i = 0; projectHeaderSet[_i]; _i++) {
-        projectHeaderNode.appendChild(projectHeaderSet[_i]);
-    }
-
-    for (let _j = 0; projectTaskNodes[_j]; _j++) {
-        todoContainerNode.appendChild(projectTaskNodes[_j]);
-    }
-}
-
-function displayAllProjects(projectsArray) {
     const projectContainer = document.getElementById("project-container");
+    const buttonAddTask = document.getElementById("add-task-button");
+    const taskConfirmBtn = document.getElementById("task-confirm-btn");
 
-    for (let _i = 0; projectsArray[_i]; _i++) {
-        projectContainer.appendChild(projectsArray[_i].getProjectTitleNode());
-    }
-}
-
-const todoPage = (() => {
     const defaultDueDate = new Date(2023, 11, 30);
     const defaultProject = new Project("Default", "This is the default project", defaultDueDate);
     const projectList = [];
+    let activeProject = 0;
 
     const testTask = new Task("Test Task", "This is a test that my classes are working", defaultDueDate, 2);
     defaultProject.addTask(testTask);
@@ -137,5 +126,59 @@ const todoPage = (() => {
     projectList.push(defaultProject);
 
     displayAllProjects(projectList);
-    displayProjectTasks(projectList[0]);
+    displayProjectTasks(projectList[activeProject]);
+
+    buttonAddTask.addEventListener("click", openNewTaskDialog);    
+    taskConfirmBtn.addEventListener("click", createNewTask);    
+
+    // functions
+
+    function displayProjectTasks(project) {
+        const _projectTaskNodes = project.getAllTasksNodes();
+        const _projectHeaderSet = project.getProjectHeaderNodes();
+
+        clearNodeChildren(projectHeaderNode);
+    
+        for (let _i = 0; _projectHeaderSet[_i]; _i++) {
+            projectHeaderNode.appendChild(_projectHeaderSet[_i]);
+        }
+
+        clearNodeChildren(todoContainerNode);
+    
+        for (let _j = 0; _projectTaskNodes[_j]; _j++) {
+            todoContainerNode.appendChild(_projectTaskNodes[_j]);
+        }
+    }
+    
+    function displayAllProjects(projectsArray) {    
+        for (let _i = 0; projectsArray[_i]; _i++) {
+            projectContainer.appendChild(projectsArray[_i].getProjectTitleNode());
+        }
+    }
+    
+    function openNewTaskDialog() {
+        taskTitle.value = "";
+        taskDescription.value = "";
+        taskDueDate.value = Date.now();
+        taskPriority.value = "medium";
+        
+        addTaskDialog.showModal();
+    }
+    
+    function createNewTask(event) {
+        event.preventDefault();
+        
+        const _dueDateAsDate = new Date(`${taskDueDate.value}T00:00`);
+        const _newTask = new Task(taskTitle.value, taskDescription.value, _dueDateAsDate, taskPriority.value);
+        projectList[activeProject].addTask(_newTask);
+        displayProjectTasks(projectList[activeProject]);
+
+        addTaskDialog.close();
+    }
+
+    function clearNodeChildren(node) {
+        while (node.firstChild) {
+            node.removeChild(node.firstChild);
+        }
+    }
 })();
