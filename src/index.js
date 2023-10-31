@@ -128,8 +128,8 @@ const todoPage = (() => {
     displayAllProjects(projectList);
     displayProjectTasks(projectList[activeProject]);
 
-    buttonAddTask.addEventListener("click", openNewTaskDialog);    
-    taskConfirmBtn.addEventListener("click", createNewTask);    
+    buttonAddTask.addEventListener("click", openNewTaskDialog);
+    taskConfirmBtn.addEventListener("click", createNewTask);
 
     // functions
 
