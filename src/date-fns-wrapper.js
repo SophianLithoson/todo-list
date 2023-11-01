@@ -13,9 +13,14 @@ function daysFromNow(date) {
     
 }
 
-function formatDate(date) {
+function formatDisplayedDate(date) {
     const formattedDate = format(date, "MM/dd/yyyy");
     return formattedDate;
 }
 
-export {daysFromNow, formatDate};
+function dateToDateString(date) {
+    const formattedDate = format(date, "yyyy-MM-dd");
+    return formattedDate;
+}
+
+export {daysFromNow, formatDisplayedDate, dateToDateString};

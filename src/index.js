@@ -1,4 +1,4 @@
-import {daysFromNow, formatDate} from "./date-fns-wrapper.js";
+import {dateToDateString, daysFromNow, formatDisplayedDate} from "./date-fns-wrapper.js";
 import "./style.css";
 
 const SOON_IN_DAYS = 3;
@@ -20,7 +20,7 @@ class Task {
         const _todoTitle = Object.assign(document.createElement("span"), {classList: "todo-title"});
         const _showMoreButton = Object.assign(document.createElement("button"), {innerHTML: "Show More"});
         const _todoDate = document.createElement("p");
-        const _editButton = document.createElement("button");
+        const _editButton = Object.assign(document.createElement("button"), {classList: "edit-button"});
         const _editButtonIcon = Object.assign(document.createElement("span"), {innerText: "edit", classList: "material-symbols-outlined"});
         const _deleteButton = document.createElement("button");
         const _deleteButtonIcon = Object.assign(document.createElement("span"), {innerText: "delete", classList: "material-symbols-outlined"});
@@ -29,7 +29,7 @@ class Task {
             _todoCheckbox.checked = true;
         }
         _todoTitle.textContent = this.description;
-        _todoDate.textContent = formatDate(this.dueDate);        
+        _todoDate.textContent = formatDisplayedDate(this.dueDate);        
         
         _todoNode.appendChild(_todoCheckbox);
         _todoNode.appendChild(_todoTitle);
@@ -101,9 +101,7 @@ class Project {
 }
 
 const todoPage = (() => {
-    // page nodes
-
-    const addTaskDialog = document.getElementById("add-task-dialog");
+    const addTaskDialog = document.getElementById("add-task-dialog");       // page nodes
     const taskTitle = document.getElementById("task-title");
     const taskDescription = document.getElementById("task-description");
     const taskDueDate = document.getElementById("task-due-date");
@@ -114,26 +112,27 @@ const todoPage = (() => {
     const buttonAddTask = document.getElementById("add-task-button");
     const taskConfirmBtn = document.getElementById("task-confirm-btn");
 
+    const projectList = [];                                                 // global vars
+    let activeProject = 0;
+    let taskToEdit = -1;
+
     const defaultDueDate = new Date(2023, 11, 30);
     const defaultProject = new Project("Default", "This is the default project", defaultDueDate);
-    const projectList = [];
-    let activeProject = 0;
 
-    const testTask = new Task("Test Task", "This is a test that my classes are working", defaultDueDate, 2);
+    const testTask = new Task("Test Task", "This is a test that my classes are working", defaultDueDate, "medium");
     defaultProject.addTask(testTask);
-    const testTaskTwo = new Task("Test Task 2", "Making sure methods all work", defaultDueDate, 3);
+    const testTaskTwo = new Task("Test Task 2", "Making sure methods all work", defaultDueDate, "high");
     defaultProject.addTask(testTaskTwo);
     projectList.push(defaultProject);
 
     displayAllProjects(projectList);
     displayProjectTasks(projectList[activeProject]);
 
-    buttonAddTask.addEventListener("click", openNewTaskDialog);
-    taskConfirmBtn.addEventListener("click", createNewTask);
+    buttonAddTask.addEventListener("click", openTaskDialog);                // click listeners
+    taskConfirmBtn.addEventListener("click", createOrEditTask);
+    
 
-    // functions
-
-    function displayProjectTasks(project) {
+    function displayProjectTasks(project) {                                 // functions
         const _projectTaskNodes = project.getAllTasksNodes();
         const _projectHeaderSet = project.getProjectHeaderNodes();
 
@@ -148,6 +147,13 @@ const todoPage = (() => {
         for (let _j = 0; _projectTaskNodes[_j]; _j++) {
             todoContainerNode.appendChild(_projectTaskNodes[_j]);
         }
+
+        const editButtons = document.getElementsByClassName("edit-button");
+
+        for(let _k = 0; editButtons.item(_k); _k++) {
+            editButtons.item(_k).value = _k;
+            editButtons.item(_k).addEventListener("click", editTaskDialog);
+        }
     }
     
     function displayAllProjects(projectsArray) {    
@@ -156,23 +162,47 @@ const todoPage = (() => {
         }
     }
     
-    function openNewTaskDialog() {
+    function openTaskDialog() {
         taskTitle.value = "";
         taskDescription.value = "";
-        taskDueDate.value = Date.now();
+        taskDueDate.value = dateToDateString(Date.now());
         taskPriority.value = "medium";
+        taskToEdit = -1;
         
         addTaskDialog.showModal();
     }
-    
-    function createNewTask(event) {
-        event.preventDefault();
-        
-        const _dueDateAsDate = new Date(`${taskDueDate.value}T00:00`);
-        const _newTask = new Task(taskTitle.value, taskDescription.value, _dueDateAsDate, taskPriority.value);
-        projectList[activeProject].addTask(_newTask);
-        displayProjectTasks(projectList[activeProject]);
 
+    function editTaskDialog() {
+        const t = projectList[activeProject].taskList[this.value];
+
+        taskTitle.value = t.title;
+        taskDescription.value = t.description;
+        taskDueDate.value = dateToDateString(t.dueDate);
+        taskPriority.value = t.priority;
+        taskToEdit = this.value;
+
+        addTaskDialog.showModal();
+    }
+    
+    function createOrEditTask(event) {
+        event.preventDefault();
+
+        console.log(taskToEdit);
+
+        if (taskToEdit === -1) {
+            const _dueDateAsDate = new Date(`${taskDueDate.value}T00:00`);
+            const _newTask = new Task(taskTitle.value, taskDescription.value, _dueDateAsDate, taskPriority.value);
+            projectList[activeProject].addTask(_newTask);
+        }
+        else {
+            projectList[activeProject].taskList[taskToEdit].title = taskTitle.value;
+            projectList[activeProject].taskList[taskToEdit].description = taskDescription.value;
+            projectList[activeProject].taskList[taskToEdit].dueDate = new Date(`${taskDueDate.value}T00:00`);
+            projectList[activeProject].taskList[taskToEdit].priority = taskPriority.value;
+        }
+        
+        
+        displayProjectTasks(projectList[activeProject]);
         addTaskDialog.close();
     }
 
