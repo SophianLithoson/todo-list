@@ -198,14 +198,11 @@ const todoPage = (() => {
 
     function removeTask() {
         projectList[activeProject].deleteTask(this.value);
-        console.log("")
         displayProjectTasks(projectList[activeProject]);
     }
     
     function createOrEditTask(event) {
         event.preventDefault();
-
-        console.log(taskToEdit);
 
         if (taskToEdit === -1) {
             const _dueDateAsDate = new Date(`${taskDueDate.value}T00:00`);
