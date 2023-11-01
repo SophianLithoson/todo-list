@@ -25,6 +25,7 @@ class Task {
         const _deleteButton = document.createElement("button");
         const _deleteButtonIcon = Object.assign(document.createElement("span"), {innerText: "delete", classList: "material-symbols-outlined"});
 
+        _todoNode.classList.add(this.priority);
         if (this.completed) {
             _todoCheckbox.checked = true;
         }
@@ -119,9 +120,9 @@ const todoPage = (() => {
     const defaultDueDate = new Date(2023, 11, 30);
     const defaultProject = new Project("Default", "This is the default project", defaultDueDate);
 
-    const testTask = new Task("Test Task", "This is a test that my classes are working", defaultDueDate, "medium");
+    const testTask = new Task("Test Task", "This is a test that my classes are working", defaultDueDate, "medium-priority");
     defaultProject.addTask(testTask);
-    const testTaskTwo = new Task("Test Task 2", "Making sure methods all work", defaultDueDate, "high");
+    const testTaskTwo = new Task("Test Task 2", "Making sure methods all work", defaultDueDate, "high-priority");
     defaultProject.addTask(testTaskTwo);
     projectList.push(defaultProject);
 

@@ -109,6 +109,18 @@ button {
     margin-right: auto;
 }
 
+.low-priority {
+    border-left: 4px solid green;
+}
+
+.medium-priority {
+    border-left: 4px solid yellow;
+}
+
+.high-priority {
+    border-left: 4px solid red;
+}
+
 .dialog-box {
     background-color: aliceblue;
     position: absolute;
