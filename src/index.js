@@ -29,9 +29,12 @@ class Task {
         _todoCheckbox.checked = (this.completed) ? true : false;
         _todoTitle.textContent = this.title;
         _todoDate.textContent = formatDisplayedDate(this.dueDate);
-        if (this.isDueSoon()) {
+        if (this.isPastDue()) {
+            _todoDate.classList.add("past-due");
+        }
+        else if (this.isDueSoon()) {
             _todoDate.classList.add("due-soon");
-        }       
+        }
         
         _todoNode.appendChild(_todoCheckbox);
         _todoNode.appendChild(_todoTitle);
