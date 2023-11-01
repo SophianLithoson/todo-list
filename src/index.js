@@ -22,7 +22,7 @@ class Task {
         const _todoDate = document.createElement("p");
         const _editButton = Object.assign(document.createElement("button"), {classList: "edit-button"});
         const _editButtonIcon = Object.assign(document.createElement("span"), {innerText: "edit", classList: "material-symbols-outlined"});
-        const _deleteButton = document.createElement("button");
+        const _deleteButton = Object.assign(document.createElement("button"), {classList: "delete-button"});
         const _deleteButtonIcon = Object.assign(document.createElement("span"), {innerText: "delete", classList: "material-symbols-outlined"});
 
         _todoNode.classList.add(this.priority);
@@ -70,8 +70,8 @@ class Project {
         this.taskList.push(task);
     }
 
-    deleteTask(task) {
-        this.taskList.splice(taskList.indexOf(task), 1);
+    deleteTask(taskIndex) {
+        this.taskList.splice(taskIndex, 1);
     }
 
     getAllTasksNodes() {
@@ -159,6 +159,13 @@ const todoPage = (() => {
             editButtons.item(_k).value = _k;
             editButtons.item(_k).addEventListener("click", editTaskDialog);
         }
+
+        const deleteButtons = document.getElementsByClassName("delete-button");
+
+        for(let _m = 0; deleteButtons.item(_m); _m++) {
+            deleteButtons.item(_m).value = _m;
+            deleteButtons.item(_m).addEventListener("click", removeTask);
+        }
     }
     
     function displayAllProjects(projectsArray) {    
@@ -187,6 +194,12 @@ const todoPage = (() => {
         taskToEdit = this.value;
 
         addTaskDialog.showModal();
+    }
+
+    function removeTask() {
+        projectList[activeProject].deleteTask(this.value);
+        console.log("")
+        displayProjectTasks(projectList[activeProject]);
     }
     
     function createOrEditTask(event) {
