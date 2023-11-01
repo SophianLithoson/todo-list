@@ -121,6 +121,10 @@ button {
     border-left: 4px solid red;
 }
 
+.due-soon {
+    color: red;
+}
+
 .dialog-box {
     background-color: aliceblue;
     position: absolute;

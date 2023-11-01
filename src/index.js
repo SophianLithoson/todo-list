@@ -26,11 +26,12 @@ class Task {
         const _deleteButtonIcon = Object.assign(document.createElement("span"), {innerText: "delete", classList: "material-symbols-outlined"});
 
         _todoNode.classList.add(this.priority);
-        if (this.completed) {
-            _todoCheckbox.checked = true;
-        }
+        _todoCheckbox.checked = (this.completed) ? true : false;
         _todoTitle.textContent = this.title;
-        _todoDate.textContent = formatDisplayedDate(this.dueDate);        
+        _todoDate.textContent = formatDisplayedDate(this.dueDate);
+        if (this.isDueSoon()) {
+            _todoDate.classList.add("due-soon");
+        }       
         
         _todoNode.appendChild(_todoCheckbox);
         _todoNode.appendChild(_todoTitle);
@@ -167,7 +168,7 @@ const todoPage = (() => {
         taskTitle.value = "";
         taskNotes.value = "";
         taskDueDate.value = dateToDateString(Date.now());
-        taskPriority.value = "medium";
+        taskPriority.value = "medium-priority";
         taskToEdit = -1;
         
         addTaskDialog.showModal();
