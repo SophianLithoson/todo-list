@@ -11,14 +11,15 @@ class Task {
         this.dueDate = dueDate;
         this.priority = priority;
         this.completed = false;
-        this.flagged = false;
+        this.showMore = false;
     }
 
-    getDisplayNode() {
-        const _todoNode = Object.assign(document.createElement("div"), {classList: "todo"});
+    getDisplayNodes() {
+        const _todoNodeWrapper = Object.assign(document.createElement("div"), {classList: "todo"});
+        const _todoNode = Object.assign(document.createElement("div"), {classList: "todo-div"});
         const _todoCheckbox = Object.assign(document.createElement("input"), {type: "checkbox"});
         const _todoTitle = Object.assign(document.createElement("span"), {classList: "todo-title"});
-        const _showMoreButton = Object.assign(document.createElement("button"), {innerHTML: "Show More"});
+        const _showMoreButton = Object.assign(document.createElement("button"), {classList: "show-more-button"});
         const _todoDate = document.createElement("p");
         const _editButton = Object.assign(document.createElement("button"), {classList: "edit-button"});
         const _editButtonIcon = Object.assign(document.createElement("span"), {innerText: "edit", classList: "material-symbols-outlined"});
@@ -28,6 +29,7 @@ class Task {
         _todoNode.classList.add(this.priority);
         _todoCheckbox.checked = (this.completed) ? true : false;
         _todoTitle.textContent = this.title;
+        _showMoreButton.textContent = (this.showMore) ? "Show Less" : "Show More";
         _todoDate.textContent = formatDisplayedDate(this.dueDate);
         if (this.isPastDue()) {
             _todoDate.classList.add("past-due");
@@ -44,8 +46,19 @@ class Task {
         _todoNode.appendChild(_editButton);
         _deleteButton.appendChild(_deleteButtonIcon);
         _todoNode.appendChild(_deleteButton);
+        _todoNodeWrapper.appendChild(_todoNode);
 
-        return _todoNode;        
+        if (!this.showMore) {                                   
+            return _todoNodeWrapper;
+        }
+
+        const _detailsNode = Object.assign(document.createElement("div"), {classList: "todo-div"});
+        const _notesNode = Object.assign(document.createElement("textarea"), {rows: "4", cols: "35"});
+        _notesNode.value = this.notes;
+        _detailsNode.appendChild(_notesNode);
+        _todoNodeWrapper.appendChild(_detailsNode);
+
+        return _todoNodeWrapper;
     }
 
     isDueSoon() {
@@ -78,7 +91,7 @@ class Project {
         const _taskNodes = [];
 
         for (let i = 0; this.taskList[i]; i++) {
-            _taskNodes.push(this.taskList[i].getDisplayNode()); 
+            _taskNodes.push(this.taskList[i].getDisplayNodes()); 
         }
 
         return _taskNodes;
@@ -166,6 +179,14 @@ const todoPage = (() => {
             deleteButtons.item(_m).value = _m;
             deleteButtons.item(_m).addEventListener("click", removeTask);
         }
+
+        const showMoreButtons = document.getElementsByClassName("show-more-button");
+
+        for(let _n = 0; showMoreButtons.item(_n); _n++) {
+            showMoreButtons.item(_n).value = _n;
+            showMoreButtons.item(_n).addEventListener("click", toggleShowMore);
+        }
+
     }
     
     function displayAllProjects(projectsArray) {    
@@ -225,5 +246,15 @@ const todoPage = (() => {
         while (node.firstChild) {
             node.removeChild(node.firstChild);
         }
+    }
+
+    function toggleShowMore() {
+        if (projectList[activeProject].taskList[this.value].showMore) {
+            projectList[activeProject].taskList[this.value].showMore = false;
+        }
+        else {
+            projectList[activeProject].taskList[this.value].showMore = true;
+        }
+        displayProjectTasks(projectList[activeProject]);
     }
 })();

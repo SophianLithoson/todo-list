@@ -82,16 +82,19 @@ main {
     margin-bottom: 0.5rem;
 }
 
-.todo {
+.todo {    
+    margin: 0.2rem auto;    
+}
+
+.todo-div {
     background-color: aliceblue;
     color: rgb(0, 0, 54);
-    display: flex;
     font-size: 0.7rem;
-    margin: 0.2rem auto;
-    padding: 1rem;
+    display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 0.6rem;
+    padding: 1rem;
 }
 
 button {
