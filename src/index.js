@@ -26,10 +26,10 @@ class Task {
         const _deleteButton = Object.assign(document.createElement("button"), {classList: "delete-button"});
         const _deleteButtonIcon = Object.assign(document.createElement("span"), {innerText: "delete", classList: "material-symbols-outlined"});
 
-        _todoNode.classList.add(this.priority);
+        _todoNodeWrapper.classList.add(this.priority);
         _todoCheckbox.checked = (this.completed) ? true : false;
         _todoTitle.textContent = this.title;
-        _showMoreButton.textContent = (this.showMore) ? "Show Less" : "Show More";
+        _showMoreButton.textContent = (this.showMore) ? "Save & Close" : "Show Notes";
         _todoDate.textContent = formatDisplayedDate(this.dueDate);
         if (this.isPastDue()) {
             _todoDate.classList.add("past-due");
@@ -52,8 +52,8 @@ class Task {
             return _todoNodeWrapper;
         }
 
-        const _detailsNode = Object.assign(document.createElement("div"), {classList: "todo-div"});
-        const _notesNode = Object.assign(document.createElement("textarea"), {rows: "4", cols: "35"});
+        const _detailsNode = Object.assign(document.createElement("div"), {classList: "todo-div", style: "margin-top: 1rem;"});
+        const _notesNode = Object.assign(document.createElement("textarea"), {rows: "6", cols: "50"});
         _notesNode.value = this.notes;
         _detailsNode.appendChild(_notesNode);
         _todoNodeWrapper.appendChild(_detailsNode);
@@ -91,7 +91,9 @@ class Project {
         const _taskNodes = [];
 
         for (let i = 0; this.taskList[i]; i++) {
-            _taskNodes.push(this.taskList[i].getDisplayNodes()); 
+            const _displayNode = this.taskList[i].getDisplayNodes();
+            _displayNode.id = "todo-" + i;
+            _taskNodes.push(_displayNode); 
         }
 
         return _taskNodes;
@@ -250,7 +252,10 @@ const todoPage = (() => {
 
     function toggleShowMore() {
         if (projectList[activeProject].taskList[this.value].showMore) {
+            const todoIDSelector = "#todo-" + this.value + " textarea"
+            const activeNotesNode = document.querySelector(todoIDSelector);
             projectList[activeProject].taskList[this.value].showMore = false;
+            projectList[activeProject].taskList[this.value].notes = activeNotesNode.value
         }
         else {
             projectList[activeProject].taskList[this.value].showMore = true;
