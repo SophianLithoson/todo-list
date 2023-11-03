@@ -5,9 +5,9 @@ const SOON_IN_DAYS = 3;
 
 
 class Task {
-    constructor(title, notes, dueDate, priority) {
+    constructor(title, dueDate, priority) {
         this.title = title;
-        this.notes = notes;
+        this.notes = "";
         this.dueDate = dueDate;
         this.priority = priority;
         this.completed = false;
@@ -123,7 +123,6 @@ class Project {
 const todoPage = (() => {
     const addTaskDialog = document.getElementById("add-task-dialog");       // page nodes
     const taskTitle = document.getElementById("task-title");
-    const taskNotes = document.getElementById("task-notes");
     const taskDueDate = document.getElementById("task-due-date");
     const taskPriority = document.getElementById("task-priority");
     const projectHeaderNode = document.getElementById("project-header");
@@ -139,9 +138,9 @@ const todoPage = (() => {
     const defaultDueDate = new Date(2023, 11, 30);
     const defaultProject = new Project("Default", "This is the default project", defaultDueDate);
 
-    const testTask = new Task("Test Task", "This is a test that my classes are working", defaultDueDate, "medium-priority");
+    const testTask = new Task("Test Task", defaultDueDate, "medium-priority");
     defaultProject.addTask(testTask);
-    const testTaskTwo = new Task("Test Task 2", "Making sure methods all work", defaultDueDate, "high-priority");
+    const testTaskTwo = new Task("Test Task 2", defaultDueDate, "high-priority");
     defaultProject.addTask(testTaskTwo);
     projectList.push(defaultProject);
 
@@ -199,7 +198,6 @@ const todoPage = (() => {
     
     function openTaskDialog() {
         taskTitle.value = "";
-        taskNotes.value = "";
         taskDueDate.value = dateToDateString(Date.now());
         taskPriority.value = "medium-priority";
         taskToEdit = -1;
@@ -211,7 +209,6 @@ const todoPage = (() => {
         const t = projectList[activeProject].taskList[this.value];
 
         taskTitle.value = t.title;
-        taskNotes.value = t.notes;
         taskDueDate.value = dateToDateString(t.dueDate);
         taskPriority.value = t.priority;
         taskToEdit = this.value;
@@ -229,7 +226,7 @@ const todoPage = (() => {
 
         if (taskToEdit === -1) {
             const _dueDateAsDate = new Date(`${taskDueDate.value}T00:00`);
-            const _newTask = new Task(taskTitle.value, taskNotes.value, _dueDateAsDate, taskPriority.value);
+            const _newTask = new Task(taskTitle.value, _dueDateAsDate, taskPriority.value);
             projectList[activeProject].addTask(_newTask);
         }
         else {
