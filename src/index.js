@@ -21,7 +21,7 @@ class Task {
         const _todoTitle = Object.assign(document.createElement("span"), {classList: "todo-title"});
         const _showMoreButton = Object.assign(document.createElement("button"), {classList: "show-more-button"});
         const _todoDate = document.createElement("p");
-        const _editButton = Object.assign(document.createElement("button"), {classList: "edit-button"});
+        const _editButton = Object.assign(document.createElement("button"), {classList: "edit-task-button"});
         const _editButtonIcon = Object.assign(document.createElement("span"), {innerText: "edit", classList: "material-symbols-outlined"});
         const _deleteButton = Object.assign(document.createElement("button"), {classList: "delete-button"});
         const _deleteButtonIcon = Object.assign(document.createElement("span"), {innerText: "delete", classList: "material-symbols-outlined"});
@@ -100,16 +100,23 @@ class Project {
     }
 
     getProjectHeaderNodes() {
+        const _projectTitleContainer = document.createElement("div");
         const _projectTitle = document.createElement("h2");
+        const _projectEditBtn = Object.assign(document.createElement("button"), {id: "edit-project-button"});
+        const _projectEditBtnIcon = Object.assign(document.createElement("span"), {innerText: "edit", classList: "material-symbols-outlined"});
         const _projectDescription = document.createElement("p");
-        const __projectHeaderSet = [];
+        const _projectHeaderSet = [];
 
         _projectTitle.textContent = this.title;
         _projectDescription.textContent = this.description;
-        __projectHeaderSet.push(_projectTitle);
-        __projectHeaderSet.push(_projectDescription);
 
-        return __projectHeaderSet;
+        _projectTitleContainer.appendChild(_projectTitle);
+        _projectEditBtn.appendChild(_projectEditBtnIcon);
+        _projectTitleContainer.appendChild(_projectEditBtn);
+        _projectHeaderSet.push(_projectTitleContainer);
+        _projectHeaderSet.push(_projectDescription);
+
+        return _projectHeaderSet;
     }
 
     getProjectTitleNode() {
@@ -167,11 +174,14 @@ const todoPage = (() => {
             todoContainerNode.appendChild(_projectTaskNodes[_j]);
         }
 
-        const editButtons = document.getElementsByClassName("edit-button");
+        const editProjectButton = document.querySelector("#edit-project-button");
+        editProjectButton.addEventListener("click", editProjectDialog);
 
-        for(let _k = 0; editButtons.item(_k); _k++) {
-            editButtons.item(_k).value = _k;
-            editButtons.item(_k).addEventListener("click", editTaskDialog);
+        const editTaskButtons = document.getElementsByClassName("edit-task-button");
+
+        for(let _k = 0; editTaskButtons.item(_k); _k++) {
+            editTaskButtons.item(_k).value = _k;
+            editTaskButtons.item(_k).addEventListener("click", editTaskDialog);
         }
 
         const deleteButtons = document.getElementsByClassName("delete-button");
@@ -194,6 +204,10 @@ const todoPage = (() => {
         for (let _i = 0; projectsArray[_i]; _i++) {
             projectContainer.appendChild(projectsArray[_i].getProjectTitleNode());
         }
+    }
+
+    function editProjectDialog() {
+        console.log(`now editing project: ${projectList[activeProject].title}`);
     }
     
     function openTaskDialog() {
