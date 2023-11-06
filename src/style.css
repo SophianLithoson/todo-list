@@ -73,6 +73,16 @@ nav {
     margin-bottom: 0.5rem;
 }
 
+#project-container li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#project-container button {
+    border: none;
+}
+
 main {
     padding: 1rem;
     width: 100%;

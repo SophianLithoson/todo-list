@@ -125,7 +125,13 @@ class Project {
 
     getProjectTitleNode() {
         const _projectTitleNode = document.createElement("li");
-        _projectTitleNode.textContent = this.title;
+        const _projectTitle = document.createElement("span");
+        const _projectDeleteSpan = Object.assign(document.createElement("button"), {id: "delete-project-button", innerText: "✕", ariaLabel: "delete"});
+
+//        _projectTitleNode.innerText = this.title;
+        _projectTitle.textContent = this.title;
+        _projectTitleNode.appendChild(_projectTitle);
+        _projectTitleNode.appendChild(_projectDeleteSpan);
 
         return _projectTitleNode;
     }
