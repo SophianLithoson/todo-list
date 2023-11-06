@@ -126,12 +126,11 @@ class Project {
     getProjectTitleNode() {
         const _projectTitleNode = document.createElement("li");
         const _projectTitle = document.createElement("span");
-        const _projectDeleteSpan = Object.assign(document.createElement("button"), {id: "delete-project-button", innerText: "✕", ariaLabel: "delete"});
+        const _projectDelBtn = Object.assign(document.createElement("button"), {id: "delete-project-button", innerText: "✕", ariaLabel: "delete"});
 
-//        _projectTitleNode.innerText = this.title;
         _projectTitle.textContent = this.title;
         _projectTitleNode.appendChild(_projectTitle);
-        _projectTitleNode.appendChild(_projectDeleteSpan);
+        _projectTitleNode.appendChild(_projectDelBtn);
 
         return _projectTitleNode;
     }

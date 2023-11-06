@@ -79,8 +79,13 @@ nav {
     align-items: center;
 }
 
+#project-container:hover button {
+    visibility: visible;
+}
+
 #project-container button {
     border: none;
+    visibility: hidden;
 }
 
 main {
