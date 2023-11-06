@@ -68,6 +68,10 @@ class Task {
     isPastDue() {
         return daysFromNow(this.dueDate) < 0 ? true : false;
     }
+
+    toggleComplete() {
+        this.completed = (this.completed) ? false : true;
+    }
 }
 
 class Project {
@@ -198,6 +202,12 @@ const todoPage = (() => {
             showMoreButtons.item(_n).addEventListener("click", toggleShowMore);
         }
 
+        const taskCheckboxes = document.querySelectorAll(".todo-div input[type='checkbox']");
+
+        for(let _p = 0; taskCheckboxes.item(_p); _p++) {
+            taskCheckboxes.item(_p).value = _p;
+            taskCheckboxes.item(_p).addEventListener("click", toggleTaskComplete);
+        }
     }
     
     function displayAllProjects(projectsArray) {    
@@ -272,5 +282,9 @@ const todoPage = (() => {
             projectList[activeProject].taskList[this.value].showMore = true;
         }
         displayProjectTasks(projectList[activeProject]);
+    }
+
+    function toggleTaskComplete() {
+        projectList[activeProject].taskList[this.value].toggleComplete();
     }
 })();

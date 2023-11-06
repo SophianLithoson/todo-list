@@ -139,7 +139,7 @@ button {
 }
 
 .medium-priority {
-    border-left: 4px solid yellow;
+    border-left: 4px solid rgb(60, 60, 145);
 }
 
 .high-priority {
@@ -156,6 +156,8 @@ button {
 
 textarea {
     font-size: inherit;
+    resize: none;
+
 }
 
 .dialog-box {
