@@ -78,6 +78,27 @@ main {
     width: 100%;
 }
 
+.project-title-container {
+    display: flex;
+    gap: 0.6rem;
+}
+
+.project-title-container button {
+    font-size: 0.8rem;
+    color:#727272;
+    background-color: white;
+    border: none;
+}
+
+.project-title-container button:hover {
+    font-size: 0.8rem;
+    color: aliceblue;
+    background-color: rgb(60, 60, 145);
+    border-width: 2px;
+    border-color: rgb(35, 35, 109);
+    border-style: solid outset outset solid;
+}
+
 #todo-container {
     margin-bottom: 0.5rem;
 }
@@ -105,6 +126,7 @@ button {
     padding: 0.1em 0.3em;
     border-radius: 3px;
     display: flex;
+    flex-wrap: wrap;
     place-content: center;
 }
 

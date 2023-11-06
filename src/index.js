@@ -100,7 +100,7 @@ class Project {
     }
 
     getProjectHeaderNodes() {
-        const _projectTitleContainer = document.createElement("div");
+        const _projectTitleContainer = Object.assign(document.createElement("div"), {classList: "project-title-container"});
         const _projectTitle = document.createElement("h2");
         const _projectEditBtn = Object.assign(document.createElement("button"), {id: "edit-project-button"});
         const _projectEditBtnIcon = Object.assign(document.createElement("span"), {innerText: "edit", classList: "material-symbols-outlined"});
