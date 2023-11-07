@@ -167,24 +167,26 @@ const todoPage = (() => {
     refreshScreen();    
 
     function displayProjectTasks(project) {                                 // functions
+        clearNodeChildren(projectHeaderNode);
+        clearNodeChildren(todoContainerNode);
+        
         if (project === undefined) {
+            buttonAddTask.style.display = "none";
             return;
         }
         
         const _projectTaskNodes = project.getAllTasksNodes();
         const _projectHeaderSet = project.getProjectHeaderNodes();
-
-        clearNodeChildren(projectHeaderNode);
     
         for (let _i = 0; _projectHeaderSet[_i]; _i++) {
             projectHeaderNode.appendChild(_projectHeaderSet[_i]);
         }
-
-        clearNodeChildren(todoContainerNode);
     
         for (let _j = 0; _projectTaskNodes[_j]; _j++) {
             todoContainerNode.appendChild(_projectTaskNodes[_j]);
-        }        
+        }
+        
+        buttonAddTask.style.display = "flex";
     }
 
     function setAllClickListeners() {
@@ -258,8 +260,18 @@ const todoPage = (() => {
     }
 
     function removeProject() {
-        console.log(`delete project at index: ${this.value}`);
         projectList.splice(this.value, 1);
+
+        if (projectList[this.value]) {
+            activeProject = this.value;
+        }
+        else if (projectList[this.value - 1]) {
+            activeProject = this.value - 1;
+        }
+        else {
+            activeProject = -1;
+        }
+
         refreshScreen();
     }
     
@@ -269,11 +281,11 @@ const todoPage = (() => {
         if (projectToEdit === -1) {
             const _newProject = new Project(projectTitle.value, projectDescription.value);
             projectList.push(_newProject);
+            activeProject = projectList.length - 1;
         }
         else {
             projectList[projectToEdit].title = projectTitle.value;
             projectList[projectToEdit].description = projectDescription.value;
-            activeProject = projectToEdit;
         }
 
         addProjectDialog.close();
