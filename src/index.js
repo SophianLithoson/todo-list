@@ -17,7 +17,7 @@ class Task {
     getDisplayNodes() {
         const _todoNodeWrapper = Object.assign(document.createElement("div"), {classList: "todo"});
         const _todoNode = Object.assign(document.createElement("div"), {classList: "todo-div"});
-        const _todoCheckbox = Object.assign(document.createElement("input"), {type: "checkbox"});
+        const _todoCheckbox = Object.assign(document.createElement("input"), {type: "checkbox", classList: "todo-checkbox"});
         const _todoTitle = Object.assign(document.createElement("span"), {classList: "todo-title"});
         const _showMoreButton = Object.assign(document.createElement("button"), {classList: "show-more-button"});
         const _todoDate = document.createElement("p");
@@ -123,7 +123,7 @@ class Project {
 
     getProjectTitleNode() {
         const _projectTitleNode = document.createElement("li");
-        const _projectTitle = document.createElement("span");
+        const _projectTitle = Object.assign(document.createElement("span"), {classList: "project-title-span"});
         const _projectDelBtn = Object.assign(document.createElement("button"), {classList: "delete-project-button", innerText: "✕", ariaLabel: "delete"});
 
         _projectTitle.textContent = this.title;
@@ -218,16 +218,23 @@ const todoPage = (() => {
             showMoreButtons.item(_n).addEventListener("click", toggleShowMore);
         }
 
-        const taskCheckboxes = document.querySelectorAll(".todo-div input[type='checkbox']");
+        const taskCheckboxes = document.getElementsByClassName("todo-checkbox");
 
         for (let _p = 0; taskCheckboxes.item(_p); _p++) {
             taskCheckboxes.item(_p).value = _p;
             taskCheckboxes.item(_p).addEventListener("click", toggleTaskComplete);
         }
 
+        const projectListSpans = document.getElementsByClassName("project-title-span");
+
+        for (let _r = 0; projectListSpans.item(_r); _r++) {
+            projectListSpans.item(_r).value = _r;
+            projectListSpans.item(_r).addEventListener("click", makeProjectActive);
+        }
+
         const projectDeleteIcons = document.getElementsByClassName("delete-project-button");
 
-        for (let _q =0; projectDeleteIcons.item(_q); _q++) {
+        for (let _q = 0; projectDeleteIcons.item(_q); _q++) {
             projectDeleteIcons.item(_q).value = _q;
             projectDeleteIcons.item(_q).addEventListener("click", removeProject);
         }
@@ -237,7 +244,12 @@ const todoPage = (() => {
         clearNodeChildren(projectContainer);
         
         for (let _i = 0; projectsArray[_i]; _i++) {
-            projectContainer.appendChild(projectsArray[_i].getProjectTitleNode());
+            const _projectToAdd = projectsArray[_i].getProjectTitleNode();
+
+            if (activeProject === _i) {
+                _projectToAdd.classList.add("selected"); 
+            }
+            projectContainer.appendChild(_projectToAdd);
         }
     }
 
@@ -363,5 +375,10 @@ const todoPage = (() => {
         displayAllProjects(projectList);
         displayProjectTasks(projectList[activeProject]);
         setAllClickListeners();
+    }
+
+    function makeProjectActive() {
+        activeProject = this.value;
+        refreshScreen();
     }
 })();
