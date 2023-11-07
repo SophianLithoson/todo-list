@@ -68,7 +68,7 @@ nav {
     display: flex;
 }
 
-.time-filtered-container {
+#time-filtered-container {
     margin-bottom: 1rem;
     border-bottom: 1px solid grey;
 }

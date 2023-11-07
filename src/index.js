@@ -57,7 +57,7 @@ const todoPage = (() => {
         buttonAddTask.style.display = "flex";
     }
 
-    function setAllClickListeners() {
+    function setTaskClickListeners() {
         const editProjectButton = document.querySelector("#edit-project-button");
         editProjectButton.addEventListener("click", editProjectDialog);
         buttonAddTask.addEventListener("click", openTaskDialog);                
@@ -92,7 +92,9 @@ const todoPage = (() => {
             taskCheckboxes.item(_p).value = _p;
             taskCheckboxes.item(_p).addEventListener("click", toggleTaskComplete);
         }
+    }
 
+    function setNavClickListeners() {
         const projectListSpans = document.getElementsByClassName("project-title-span");
 
         for (let _r = 0; projectListSpans.item(_r); _r++) {
@@ -106,6 +108,10 @@ const todoPage = (() => {
             projectDeleteIcons.item(_q).value = _q;
             projectDeleteIcons.item(_q).addEventListener("click", removeProject);
         }
+
+        const dashboardContainer = document.getElementById("time-filtered-container");
+        dashboardContainer.addEventListener("click", makeProjectActive);
+        
     }
     
     function displayAllProjects(projectsArray) {
@@ -240,17 +246,35 @@ const todoPage = (() => {
 
     function refreshScreen() {
         displayAllProjects(projectList);
+        setNavClickListeners();
+
         if (activeProject === "Due Today" || activeProject === "This Week" || activeProject === "This Month") {
-            displaySortedTasks(activeProject);
+            displayFilteredTasks(activeProject);
+            setSortedClickListeners();
         }
         else {
             displayProjectTasks(projectList[activeProject]);
+            setTaskClickListeners();
         }        
-        setAllClickListeners();
     }
 
-    function makeProjectActive() {
-        activeProject = this.value;
+    function makeProjectActive(event) {
+        if (this.id === "time-filtered-container") {
+            activeProject = event.target.innerHTML;
+        }
+        else {
+            activeProject = this.value;
+        }
         refreshScreen();
+    }
+
+    function displayFilteredTasks(criteria) {
+        clearNodeChildren(projectHeaderNode);
+        clearNodeChildren(todoContainerNode);
+        console.log(`${criteria}`);
+    }
+
+    function setSortedClickListeners() {
+
     }
 })();
