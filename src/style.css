@@ -83,11 +83,11 @@ nav {
     align-items: center;
 }
 
-#project-container:hover button {
+li:hover button {
     visibility: visible;
 }
 
-#project-container button {
+li button {
     border: none;
     visibility: hidden;
 }
