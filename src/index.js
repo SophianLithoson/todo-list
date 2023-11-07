@@ -326,7 +326,7 @@ const todoPage = (() => {
 
     function removeTask() {
         projectList[activeProject].deleteTask(this.value);
-        displayProjectTasks(projectList[activeProject]);
+        refreshScreen();
     }
     
     function createOrEditTask(event) {
@@ -344,7 +344,7 @@ const todoPage = (() => {
             projectList[activeProject].taskList[taskToEdit].priority = taskPriority.value;
         }        
         
-        displayProjectTasks(projectList[activeProject]);
+        refreshScreen();
         addTaskDialog.close();
     }
 
@@ -364,7 +364,7 @@ const todoPage = (() => {
         else {
             projectList[activeProject].taskList[this.value].showMore = true;
         }
-        displayProjectTasks(projectList[activeProject]);
+        refreshScreen();
     }
 
     function toggleTaskComplete() {
