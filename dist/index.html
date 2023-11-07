@@ -59,6 +59,26 @@
                 </div>
             </form>
         </dialog>
+        <dialog id="add-project-dialog" class="dialog-box">
+            <form>
+                <p>
+                    <label>
+                        Title:
+                        <input type="text" id="project-title" maxlength="30"/>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        Description:
+                        <input type="text" id="project-description" maxlength="70"/>
+                    </label>
+                </p>
+                <div class="dialog-button-row">
+                    <button id="project-confirm-btn" value="default">Confirm</button>
+                    <button value="cancel" formmethod="dialog">Cancel</button>
+                </div>
+            </form>
+        </dialog>
     </div>
     <script src="./index.bundle.js" defer></script>
 </body>

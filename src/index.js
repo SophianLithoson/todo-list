@@ -75,11 +75,9 @@ class Task {
 }
 
 class Project {
-    constructor(title, description, dueDate) {
+    constructor(title, description) {
         this.title = title;
         this.description = description;
-        this.dueDate = dueDate;
-        this.completed = false;
         this.taskList = [];
     }
     
@@ -126,7 +124,7 @@ class Project {
     getProjectTitleNode() {
         const _projectTitleNode = document.createElement("li");
         const _projectTitle = document.createElement("span");
-        const _projectDelBtn = Object.assign(document.createElement("button"), {id: "delete-project-button", innerText: "✕", ariaLabel: "delete"});
+        const _projectDelBtn = Object.assign(document.createElement("button"), {classList: "delete-project-button", innerText: "✕", ariaLabel: "delete"});
 
         _projectTitle.textContent = this.title;
         _projectTitleNode.appendChild(_projectTitle);
@@ -146,13 +144,19 @@ const todoPage = (() => {
     const projectContainer = document.getElementById("project-container");
     const buttonAddTask = document.getElementById("add-task-button");
     const taskConfirmBtn = document.getElementById("task-confirm-btn");
+    const buttonAddProject = document.getElementById("add-project-button");
+    const addProjectDialog = document.getElementById("add-project-dialog");
+    const projectTitle = document.getElementById("project-title");
+    const projectDescription = document.getElementById("project-description");
+    const projectConfirmBtn = document.getElementById("project-confirm-btn");
 
     const projectList = [];                                                 // global vars
     let activeProject = 0;
     let taskToEdit = -1;
+    let projectToEdit = -1;
 
     const defaultDueDate = new Date(2023, 11, 30);
-    const defaultProject = new Project("Default", "This is the default project", defaultDueDate);
+    const defaultProject = new Project("Default", "This is the default project");
 
     const testTask = new Task("Test Task", defaultDueDate, "medium-priority");
     defaultProject.addTask(testTask);
@@ -160,14 +164,13 @@ const todoPage = (() => {
     defaultProject.addTask(testTaskTwo);
     projectList.push(defaultProject);
 
-    displayAllProjects(projectList);
-    displayProjectTasks(projectList[activeProject]);
-
-    buttonAddTask.addEventListener("click", openTaskDialog);                // click listeners
-    taskConfirmBtn.addEventListener("click", createOrEditTask);
-    
+    refreshScreen();    
 
     function displayProjectTasks(project) {                                 // functions
+        if (project === undefined) {
+            return;
+        }
+        
         const _projectTaskNodes = project.getAllTasksNodes();
         const _projectHeaderSet = project.getProjectHeaderNodes();
 
@@ -181,50 +184,102 @@ const todoPage = (() => {
     
         for (let _j = 0; _projectTaskNodes[_j]; _j++) {
             todoContainerNode.appendChild(_projectTaskNodes[_j]);
-        }
+        }        
+    }
 
+    function setAllClickListeners() {
         const editProjectButton = document.querySelector("#edit-project-button");
         editProjectButton.addEventListener("click", editProjectDialog);
+        buttonAddTask.addEventListener("click", openTaskDialog);                
+        taskConfirmBtn.addEventListener("click", createOrEditTask);
+        buttonAddProject.addEventListener("click", openProjectDialog);
+        projectConfirmBtn.addEventListener("click", createOrEditProject);
 
         const editTaskButtons = document.getElementsByClassName("edit-task-button");
 
-        for(let _k = 0; editTaskButtons.item(_k); _k++) {
+        for (let _k = 0; editTaskButtons.item(_k); _k++) {
             editTaskButtons.item(_k).value = _k;
             editTaskButtons.item(_k).addEventListener("click", editTaskDialog);
         }
 
         const deleteButtons = document.getElementsByClassName("delete-button");
 
-        for(let _m = 0; deleteButtons.item(_m); _m++) {
+        for (let _m = 0; deleteButtons.item(_m); _m++) {
             deleteButtons.item(_m).value = _m;
             deleteButtons.item(_m).addEventListener("click", removeTask);
         }
 
         const showMoreButtons = document.getElementsByClassName("show-more-button");
 
-        for(let _n = 0; showMoreButtons.item(_n); _n++) {
+        for (let _n = 0; showMoreButtons.item(_n); _n++) {
             showMoreButtons.item(_n).value = _n;
             showMoreButtons.item(_n).addEventListener("click", toggleShowMore);
         }
 
         const taskCheckboxes = document.querySelectorAll(".todo-div input[type='checkbox']");
 
-        for(let _p = 0; taskCheckboxes.item(_p); _p++) {
+        for (let _p = 0; taskCheckboxes.item(_p); _p++) {
             taskCheckboxes.item(_p).value = _p;
             taskCheckboxes.item(_p).addEventListener("click", toggleTaskComplete);
         }
+
+        const projectDeleteIcons = document.getElementsByClassName("delete-project-button");
+
+        for (let _q =0; projectDeleteIcons.item(_q); _q++) {
+            projectDeleteIcons.item(_q).value = _q;
+            projectDeleteIcons.item(_q).addEventListener("click", removeProject);
+        }
     }
     
-    function displayAllProjects(projectsArray) {    
+    function displayAllProjects(projectsArray) {
+        clearNodeChildren(projectContainer);
+        
         for (let _i = 0; projectsArray[_i]; _i++) {
             projectContainer.appendChild(projectsArray[_i].getProjectTitleNode());
         }
     }
 
+    function openProjectDialog() {
+        projectTitle.value = "";
+        projectDescription.value = "";
+        projectToEdit = -1;
+
+        addProjectDialog.showModal();
+    }
+
     function editProjectDialog() {
-        console.log(`now editing project: ${projectList[activeProject].title}`);
+        const p = projectList[activeProject];
+
+        projectTitle.value = p.title;
+        projectDescription.value = p.description
+        projectToEdit = activeProject;
+
+        addProjectDialog.showModal();
+    }
+
+    function removeProject() {
+        console.log(`delete project at index: ${this.value}`);
+        projectList.splice(this.value, 1);
+        refreshScreen();
     }
     
+    function createOrEditProject(event) {
+        event.preventDefault();
+
+        if (projectToEdit === -1) {
+            const _newProject = new Project(projectTitle.value, projectDescription.value);
+            projectList.push(_newProject);
+        }
+        else {
+            projectList[projectToEdit].title = projectTitle.value;
+            projectList[projectToEdit].description = projectDescription.value;
+            activeProject = projectToEdit;
+        }
+
+        addProjectDialog.close();
+        refreshScreen();
+    }
+
     function openTaskDialog() {
         taskTitle.value = "";
         taskDueDate.value = dateToDateString(Date.now());
@@ -263,8 +318,7 @@ const todoPage = (() => {
             projectList[activeProject].taskList[taskToEdit].notes = taskNotes.value;
             projectList[activeProject].taskList[taskToEdit].dueDate = new Date(`${taskDueDate.value}T00:00`);
             projectList[activeProject].taskList[taskToEdit].priority = taskPriority.value;
-        }
-        
+        }        
         
         displayProjectTasks(projectList[activeProject]);
         addTaskDialog.close();
@@ -291,5 +345,11 @@ const todoPage = (() => {
 
     function toggleTaskComplete() {
         projectList[activeProject].taskList[this.value].toggleComplete();
+    }
+
+    function refreshScreen() {
+        displayAllProjects(projectList);
+        displayProjectTasks(projectList[activeProject]);
+        setAllClickListeners();
     }
 })();
