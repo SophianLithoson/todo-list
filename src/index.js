@@ -60,7 +60,7 @@ const todoPage = (() => {
         buttonAddTask.style.display = "flex";
     }
 
-    function setTaskClickListeners() {
+    function setTaskViewListeners() {
         const editProjectButton = document.querySelector("#edit-project-button");
         editProjectButton.addEventListener("click", editProjectDialog);
         buttonAddTask.addEventListener("click", openTaskDialog);                
@@ -122,10 +122,6 @@ const todoPage = (() => {
         
         for (let _i = 0; projectsArray[_i]; _i++) {
             const _projectToAdd = projectsArray[_i].getProjectTitleNode();
-
-            if (activeProject === _i) {
-                _projectToAdd.classList.add("selected"); 
-            }
             projectContainer.appendChild(_projectToAdd);
         }
     }
@@ -250,14 +246,15 @@ const todoPage = (() => {
     function refreshScreen() {
         displayAllProjects(projectList);
         setNavClickListeners();
+        setSelectedNavItem();
 
         if (activeProject === "Due Today" || activeProject === "This Week" || activeProject === "This Month") {
             displayFilteredTasks(activeProject);
-            setSortedClickListeners();
+            setSortedViewListeners();
         }
         else {
             displayProjectTasks(projectList[activeProject]);
-            setTaskClickListeners();
+            setTaskViewListeners();
         }        
     }
 
@@ -287,7 +284,20 @@ const todoPage = (() => {
         }
     }
 
-    function setSortedClickListeners() {
+    function setSelectedNavItem() {
+        const allListItems = document.getElementsByTagName("li");
+
+        for (let listItem of allListItems) {
+            if (listItem.innerHTML.includes(activeProject)) {
+                listItem.classList.add("selected");
+            }
+            else {
+                listItem.classList.remove("selected");
+            }
+        }
+    }
+
+    function setSortedViewListeners() {
 
     }
 })();
