@@ -87,6 +87,10 @@ li:hover button {
     visibility: visible;
 }
 
+li:hover {
+    cursor: pointer;
+}
+
 li button {
     border: none;
     visibility: hidden;
@@ -196,4 +200,20 @@ textarea {
     display: flex;
     gap: 0.3rem;
     margin-top: 0.6rem;
+}
+
+.filtered-projects {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.listed-projects {
+    display: block;
+}
+
+.summary-node {
+    background-color: aliceblue;
+    border: 1px solid rgb(60, 60, 145);
+    padding: 1rem;
 }

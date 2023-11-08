@@ -49,6 +49,9 @@ const todoPage = (() => {
         for (let _i = 0; _projectHeaderSet[_i]; _i++) {
             projectHeaderNode.appendChild(_projectHeaderSet[_i]);
         }
+
+        todoContainerNode.classList.remove("filtered-projects");
+        todoContainerNode.classList.add("listed-projects");
     
         for (let _j = 0; _projectTaskNodes[_j]; _j++) {
             todoContainerNode.appendChild(_projectTaskNodes[_j]);
@@ -260,7 +263,7 @@ const todoPage = (() => {
 
     function makeProjectActive(event) {
         if (this.id === "time-filtered-container") {
-            activeProject = event.target.innerHTML;
+            activeProject = event.target.innerText;
         }
         else {
             activeProject = this.value;
@@ -271,7 +274,17 @@ const todoPage = (() => {
     function displayFilteredTasks(criteria) {
         clearNodeChildren(projectHeaderNode);
         clearNodeChildren(todoContainerNode);
-        console.log(`${criteria}`);
+        buttonAddTask.style.display = "none";
+
+        const filteredHeader = document.createElement("h2");
+        filteredHeader.innerText = criteria;
+        projectHeaderNode.appendChild(filteredHeader);
+        todoContainerNode.classList.remove("listed-projects");
+        todoContainerNode.classList.add("filtered-projects");
+
+        for (let _i = 0; projectList[_i]; _i++) {
+            todoContainerNode.appendChild(projectList[_i].getFilteredSummaryNode(criteria));
+        }
     }
 
     function setSortedClickListeners() {

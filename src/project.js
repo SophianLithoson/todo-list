@@ -130,6 +130,25 @@ class Project {
 
         return _projectTitleNode;
     }
+
+    getFilteredSummaryNode(criteria) {
+        const _summaryNode = Object.assign(document.createElement("div"), {classList: "summary-node"});
+        const _projectTitle = document.createElement("h3");
+        const _numDaysAhead = (criteria === "Due Today") ? 0 : (criteria === "This Week") ? 6 : (criteria === "This Month") ? 29 : -Infinity;
+
+        _projectTitle.innerText = this.title;
+        _summaryNode.appendChild(_projectTitle);
+        
+        for (let _i = 0; this.taskList[_i]; _i++) {
+            if (daysFromNow(this.taskList[_i].dueDate) < _numDaysAhead) {
+                const _taskToAdd = document.createElement("p");
+                _taskToAdd.innerText = this.taskList[_i].title;
+                _summaryNode.appendChild(_taskToAdd);
+            }
+        }
+
+        return _summaryNode;
+    }
 }
 
 export {Task, Project};
