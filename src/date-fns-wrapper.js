@@ -18,9 +18,14 @@ function formatDisplayedDate(date) {
     return formattedDate;
 }
 
+function formatShortDisplayDate(date) {
+    const formattedDate = format(date, "MM/dd");
+    return formattedDate;
+}
+
 function dateToDateString(date) {
     const formattedDate = format(date, "yyyy-MM-dd");
     return formattedDate;
 }
 
-export {daysFromNow, formatDisplayedDate, dateToDateString};
+export {daysFromNow, formatDisplayedDate, formatShortDisplayDate, dateToDateString};

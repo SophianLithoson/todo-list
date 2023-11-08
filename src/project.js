@@ -1,4 +1,4 @@
-import {daysFromNow, formatDisplayedDate} from "./date-fns-wrapper.js";
+import {daysFromNow, formatDisplayedDate, formatShortDisplayDate} from "./date-fns-wrapper.js";
 
 const SOON_IN_DAYS = 3;
 
@@ -10,6 +10,15 @@ class Task {
         this.priority = priority;
         this.completed = false;
         this.showMore = false;
+    }
+
+    get shortTitle() {
+        if (this.title.length > 25) {
+            return this.title.slice(0, 22) + "...";
+        }
+        else {
+            return this.title;
+        }
     }
 
     getDisplayNodes() {
@@ -136,13 +145,21 @@ class Project {
         const _projectTitle = document.createElement("h3");
         const _numDaysAhead = (criteria === "Due Today") ? 0 : (criteria === "This Week") ? 6 : (criteria === "This Month") ? 29 : -Infinity;
 
+        _projectTitle.style = "margin-bottom: 1rem;"
         _projectTitle.innerText = this.title;
         _summaryNode.appendChild(_projectTitle);
         
         for (let _i = 0; this.taskList[_i]; _i++) {
             if (daysFromNow(this.taskList[_i].dueDate) < _numDaysAhead) {
-                const _taskToAdd = document.createElement("p");
-                _taskToAdd.innerText = this.taskList[_i].title;
+                const _taskToAdd = document.createElement("div");
+                const _taskName = document.createElement("p");
+                const _taskDate = document.createElement("p");
+
+                _taskToAdd.style = "display: flex; justify-content: space-between; gap: 2rem;"
+                _taskName.innerText = this.taskList[_i].shortTitle;
+                _taskDate.innerText = formatShortDisplayDate(this.taskList[_i].dueDate);
+                _taskToAdd.appendChild(_taskName);
+                _taskToAdd.appendChild(_taskDate);
                 _summaryNode.appendChild(_taskToAdd);
             }
         }
