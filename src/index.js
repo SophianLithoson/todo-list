@@ -298,6 +298,11 @@ const todoPage = (() => {
     }
 
     function setSortedViewListeners() {
+        const allSummaryNodes = document.getElementsByClassName("summary-node");
 
+        for (let _i = 0; allSummaryNodes.item(_i); _i++) {
+            allSummaryNodes.item(_i).value = _i;
+            allSummaryNodes.item(_i).addEventListener("click", makeProjectActive);
+        }
     }
 })();
