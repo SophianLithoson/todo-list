@@ -206,6 +206,7 @@ textarea {
     display: flex;
     flex-wrap: wrap;
     gap: 1.5rem;
+    margin-top: 1.5rem;
 }
 
 .listed-projects {
@@ -216,4 +217,5 @@ textarea {
     background-color: aliceblue;
     border: 1px solid rgb(60, 60, 145);
     padding: 1rem;
+    border-radius: 1rem;
 }
