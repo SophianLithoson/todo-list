@@ -1,5 +1,6 @@
 import {dateToDateString} from "./date-fns-wrapper.js";
 import {Project, Task} from "./project.js";
+import {storageExists, saveProject, loadAllProjects} from "./localstorage.js";
 import "./style.css";
 
 const todoPage = (() => {
@@ -32,7 +33,13 @@ const todoPage = (() => {
     defaultProject.addTask(testTaskTwo);
     projectList.push(defaultProject);
 
-    refreshScreen();    
+    
+
+    console.log(JSON.stringify(projectList[activeProject]));
+    saveProject(activeProject, projectList[activeProject]);
+    const testRecoveredProjects = loadAllProjects();
+    projectList.push(testRecoveredProjects[0]);
+    refreshScreen();
 
     function displayProjectTasks(project) {                                 // functions
         clearNodeChildren(projectHeaderNode);
