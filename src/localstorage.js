@@ -13,6 +13,10 @@ function saveProject(key, project) {
     window.localStorage.setItem(key, JSON.stringify(project));
 }
 
+function clearStorage() {
+    window.localStorage.clear();
+}
+
 function loadAllProjects() {
     const _projectList = [];
 
@@ -31,4 +35,4 @@ function loadAllProjects() {
     return _projectList;
 }
 
-export {storageExists, saveProject, loadAllProjects};
+export {storageExists, saveProject, loadAllProjects, clearStorage};

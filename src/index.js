@@ -1,6 +1,6 @@
 import {dateToDateString} from "./date-fns-wrapper.js";
 import {Project, Task} from "./project.js";
-import {storageExists, saveProject, loadAllProjects} from "./localstorage.js";
+import {storageExists, saveProject, loadAllProjects, clearStorage} from "./localstorage.js";
 import "./style.css";
 
 const todoPage = (() => {
@@ -20,7 +20,7 @@ const todoPage = (() => {
     const projectConfirmBtn = document.getElementById("project-confirm-btn");
     
     let projectList = [];                                                 // global vars
-    let activeProject = 0;
+    let activeProjectIndex = 0;
     let taskToEdit = -1;
     let projectToEdit = -1;
 
@@ -136,11 +136,11 @@ const todoPage = (() => {
     }
 
     function editProjectDialog() {
-        const p = projectList[activeProject];
+        const p = projectList[activeProjectIndex];
 
         projectTitle.value = p.title;
         projectDescription.value = p.description
-        projectToEdit = activeProject;
+        projectToEdit = activeProjectIndex;
 
         addProjectDialog.showModal();
     }
@@ -149,15 +149,16 @@ const todoPage = (() => {
         projectList.splice(this.value, 1);
 
         if (projectList[this.value]) {
-            activeProject = this.value;
+            activeProjectIndex = this.value;
         }
         else if (projectList[this.value - 1]) {
-            activeProject = this.value - 1;
+            activeProjectIndex = this.value - 1;
         }
         else {
-            activeProject = -1;
+            activeProjectIndex = -1;
         }
 
+        saveAllProjects();
         refreshScreen();
     }
     
@@ -167,13 +168,14 @@ const todoPage = (() => {
         if (projectToEdit === -1) {
             const _newProject = new Project(projectTitle.value, projectDescription.value);
             projectList.push(_newProject);
-            activeProject = projectList.length - 1;
+            activeProjectIndex = projectList.length - 1;
         }
         else {
             projectList[projectToEdit].title = projectTitle.value;
             projectList[projectToEdit].description = projectDescription.value;
         }
 
+        saveAllProjects();
         addProjectDialog.close();
         refreshScreen();
     }
@@ -188,7 +190,7 @@ const todoPage = (() => {
     }
 
     function editTaskDialog() {
-        const t = projectList[activeProject].taskList[this.value];
+        const t = projectList[activeProjectIndex].taskList[this.value];
 
         taskTitle.value = t.title;
         taskDueDate.value = dateToDateString(t.dueDate);
@@ -199,7 +201,8 @@ const todoPage = (() => {
     }
 
     function removeTask() {
-        projectList[activeProject].deleteTask(this.value);
+        projectList[activeProjectIndex].deleteTask(this.value);
+        saveProject(activeProjectIndex, projectList[activeProjectIndex]);
         refreshScreen();
     }
     
@@ -209,14 +212,15 @@ const todoPage = (() => {
         if (taskToEdit === -1) {
             const _dueDateAsDate = new Date(`${taskDueDate.value}T00:00`);
             const _newTask = new Task(taskTitle.value, _dueDateAsDate, taskPriority.value);
-            projectList[activeProject].addTask(_newTask);
+            projectList[activeProjectIndex].addTask(_newTask);
         }
         else {
-            projectList[activeProject].taskList[taskToEdit].title = taskTitle.value;
-            projectList[activeProject].taskList[taskToEdit].dueDate = new Date(`${taskDueDate.value}T00:00`);
-            projectList[activeProject].taskList[taskToEdit].priority = taskPriority.value;
+            projectList[activeProjectIndex].taskList[taskToEdit].title = taskTitle.value;
+            projectList[activeProjectIndex].taskList[taskToEdit].dueDate = new Date(`${taskDueDate.value}T00:00`);
+            projectList[activeProjectIndex].taskList[taskToEdit].priority = taskPriority.value;
         }        
         
+        saveProject(activeProjectIndex, projectList[activeProjectIndex]);
         refreshScreen();
         addTaskDialog.close();
     }
@@ -228,20 +232,22 @@ const todoPage = (() => {
     }
 
     function toggleShowMore() {
-        if (projectList[activeProject].taskList[this.value].showMore) {
-            const todoIDSelector = "#todo-" + this.value + " textarea"
+        if (projectList[activeProjectIndex].taskList[this.value].showMore) {
+            const todoIDSelector = "#todo-" + this.value + " textarea";
             const activeNotesNode = document.querySelector(todoIDSelector);
-            projectList[activeProject].taskList[this.value].showMore = false;
-            projectList[activeProject].taskList[this.value].notes = activeNotesNode.value
+            projectList[activeProjectIndex].taskList[this.value].showMore = false;
+            projectList[activeProjectIndex].taskList[this.value].notes = activeNotesNode.value;
+            saveProject(activeProjectIndex, projectList[activeProjectIndex]);
         }
         else {
-            projectList[activeProject].taskList[this.value].showMore = true;
+            projectList[activeProjectIndex].taskList[this.value].showMore = true;
         }
         refreshScreen();
     }
 
     function toggleTaskComplete() {
-        projectList[activeProject].taskList[this.value].toggleComplete();
+        projectList[activeProjectIndex].taskList[this.value].toggleComplete();
+        saveProject(activeProjectIndex, projectList[activeProjectIndex]);
     }
 
     function refreshScreen() {
@@ -249,22 +255,22 @@ const todoPage = (() => {
         setNavClickListeners();
         setSelectedNavItem();
 
-        if (activeProject === "Due Today" || activeProject === "This Week" || activeProject === "This Month") {
-            displayFilteredTasks(activeProject);
+        if (activeProjectIndex === "Due Today" || activeProjectIndex === "This Week" || activeProjectIndex === "This Month") {
+            displayFilteredTasks(activeProjectIndex);
             setSortedViewListeners();
         }
         else {
-            displayProjectTasks(projectList[activeProject]);
+            displayProjectTasks(projectList[activeProjectIndex]);
             setTaskViewListeners();
         }        
     }
 
     function makeProjectActive(event) {
         if (this.id === "time-filtered-container") {
-            activeProject = event.target.innerText;
+            activeProjectIndex = event.target.innerText;
         }
         else {
-            activeProject = this.value;
+            activeProjectIndex = this.value;
         }
         refreshScreen();
     }
@@ -289,7 +295,7 @@ const todoPage = (() => {
         const allListItems = document.getElementsByTagName("li");
 
         for (let listItem of allListItems) {
-            if (listItem.innerHTML.includes(activeProject)) {
+            if (listItem.innerHTML.includes(activeProjectIndex)) {
                 listItem.classList.add("selected");
             }
             else {
@@ -320,5 +326,12 @@ const todoPage = (() => {
         _projectList.push(_defaultProject);
 
         return _projectList;
+    }
+
+    function saveAllProjects() {
+        clearStorage();
+        for (let _i = 0; projectList[_i]; _i++) {
+            saveProject(_i, projectList[_i]);
+        }
     }
 })();
