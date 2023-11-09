@@ -1,4 +1,4 @@
-import {Project, Task} from "./project.js";
+import {Project, Task} from "./project";
 
 function storageExists() {
     if (window.localStorage.length > 0) {

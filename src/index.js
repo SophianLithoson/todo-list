@@ -1,6 +1,6 @@
-import {dateToDateString} from "./date-fns-wrapper.js";
-import {Project, Task} from "./project.js";
-import {storageExists, saveProject, loadAllProjects, clearStorage} from "./localstorage.js";
+import {dateToDateString} from "./date-fns-wrapper";
+import {Project, Task} from "./project";
+import {storageExists, saveProject, loadAllProjects, clearStorage} from "./localstorage";
 import "./style.css";
 
 const todoPage = (() => {
@@ -233,7 +233,7 @@ const todoPage = (() => {
 
     function toggleShowMore() {
         if (projectList[activeProjectIndex].taskList[this.value].showMore) {
-            const _todoIDSelector = "#todo-" + this.value + " textarea";
+            const _todoIDSelector = `#todo-${this.value} textarea`;
             const _activeNotesNode = document.querySelector(_todoIDSelector);
             projectList[activeProjectIndex].taskList[this.value].showMore = false;
             projectList[activeProjectIndex].taskList[this.value].notes = _activeNotesNode.value;

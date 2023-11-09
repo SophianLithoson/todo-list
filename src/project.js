@@ -1,4 +1,4 @@
-import {daysFromNow, formatDisplayedDate, formatShortDisplayDate} from "./date-fns-wrapper.js";
+import {daysFromNow, formatDisplayedDate, formatShortDisplayDate} from "./date-fns-wrapper";
 
 const SOON_IN_DAYS = 3;
 
@@ -14,7 +14,7 @@ class Task {
 
     get shortTitle() {
         if (this.title.length > 25) {
-            return this.title.slice(0, 22) + "...";
+            return `${this.title.slice(0, 22)}...`;
         }
         else {
             return this.title;
@@ -101,7 +101,7 @@ class Project {
 
         for (let i = 0; this.taskList[i]; i++) {
             const _displayNode = this.taskList[i].getDisplayNodes();
-            _displayNode.id = "todo-" + i;
+            _displayNode.id = `todo-${i}`;
             _taskNodes.push(_displayNode); 
         }
 
