@@ -1,4 +1,4 @@
-import {daysFromNow, formatDisplayedDate, formatShortDisplayDate} from "./date-fns-wrapper";
+import { daysFromNow, formatDisplayedDate, formatShortDisplayDate } from "./date-fns-wrapper";
 
 const SOON_IN_DAYS = 3;
 
@@ -22,16 +22,16 @@ class Task {
     }
 
     getDisplayNodes() {
-        const _todoNodeWrapper = Object.assign(document.createElement("div"), {classList: "todo"});
-        const _todoNode = Object.assign(document.createElement("div"), {classList: "todo-div"});
-        const _todoCheckbox = Object.assign(document.createElement("input"), {type: "checkbox", classList: "todo-checkbox"});
-        const _todoTitle = Object.assign(document.createElement("span"), {classList: "todo-title"});
-        const _showMoreButton = Object.assign(document.createElement("button"), {classList: "show-more-button"});
+        const _todoNodeWrapper = Object.assign(document.createElement("div"), { classList: "todo" });
+        const _todoNode = Object.assign(document.createElement("div"), { classList: "todo-div" });
+        const _todoCheckbox = Object.assign(document.createElement("input"), { type: "checkbox", classList: "todo-checkbox" });
+        const _todoTitle = Object.assign(document.createElement("span"), { classList: "todo-title" });
+        const _showMoreButton = Object.assign(document.createElement("button"), { classList: "show-more-button" });
         const _todoDate = document.createElement("p");
-        const _editButton = Object.assign(document.createElement("button"), {classList: "edit-task-button"});
-        const _editButtonIcon = Object.assign(document.createElement("span"), {innerText: "edit", classList: "material-symbols-outlined"});
-        const _deleteButton = Object.assign(document.createElement("button"), {classList: "delete-button"});
-        const _deleteButtonIcon = Object.assign(document.createElement("span"), {innerText: "delete", classList: "material-symbols-outlined"});
+        const _editButton = Object.assign(document.createElement("button"), { classList: "edit-task-button" });
+        const _editButtonIcon = Object.assign(document.createElement("span"), { innerText: "edit", classList: "material-symbols-outlined" });
+        const _deleteButton = Object.assign(document.createElement("button"), { classList: "delete-button" });
+        const _deleteButtonIcon = Object.assign(document.createElement("span"), { innerText: "delete", classList: "material-symbols-outlined" });
 
         _todoNodeWrapper.classList.add(this.priority);
         _todoCheckbox.checked = (this.completed) ? true : false;
@@ -44,7 +44,7 @@ class Task {
         else if (this.isDueSoon()) {
             _todoDate.classList.add("due-soon");
         }
-        
+
         _todoNode.appendChild(_todoCheckbox);
         _todoNode.appendChild(_todoTitle);
         _todoNode.appendChild(_showMoreButton);
@@ -55,12 +55,12 @@ class Task {
         _todoNode.appendChild(_deleteButton);
         _todoNodeWrapper.appendChild(_todoNode);
 
-        if (!this.showMore) {                                   
+        if (!this.showMore) {
             return _todoNodeWrapper;
         }
 
-        const _detailsNode = Object.assign(document.createElement("div"), {classList: "todo-div", style: "margin-top: 1rem;"});
-        const _notesNode = Object.assign(document.createElement("textarea"), {rows: "6", cols: "50"});
+        const _detailsNode = Object.assign(document.createElement("div"), { classList: "todo-div", style: "margin-top: 1rem;" });
+        const _notesNode = Object.assign(document.createElement("textarea"), { rows: "6", cols: "50" });
         _notesNode.value = this.notes;
         _detailsNode.appendChild(_notesNode);
         _todoNodeWrapper.appendChild(_detailsNode);
@@ -87,7 +87,7 @@ class Project {
         this.description = description;
         this.taskList = [];
     }
-    
+
     addTask(task) {
         this.taskList.push(task);
     }
@@ -102,17 +102,17 @@ class Project {
         for (let i = 0; this.taskList[i]; i++) {
             const _displayNode = this.taskList[i].getDisplayNodes();
             _displayNode.id = `todo-${i}`;
-            _taskNodes.push(_displayNode); 
+            _taskNodes.push(_displayNode);
         }
 
         return _taskNodes;
     }
 
     getProjectHeaderNodes() {
-        const _projectTitleContainer = Object.assign(document.createElement("div"), {classList: "project-title-container"});
+        const _projectTitleContainer = Object.assign(document.createElement("div"), { classList: "project-title-container" });
         const _projectTitle = document.createElement("h2");
-        const _projectEditBtn = Object.assign(document.createElement("button"), {id: "edit-project-button"});
-        const _projectEditBtnIcon = Object.assign(document.createElement("span"), {innerText: "edit", classList: "material-symbols-outlined"});
+        const _projectEditBtn = Object.assign(document.createElement("button"), { id: "edit-project-button" });
+        const _projectEditBtnIcon = Object.assign(document.createElement("span"), { innerText: "edit", classList: "material-symbols-outlined" });
         const _projectDescription = document.createElement("p");
         const _projectHeaderSet = [];
 
@@ -130,8 +130,8 @@ class Project {
 
     getProjectTitleNode() {
         const _projectTitleNode = document.createElement("li");
-        const _projectTitle = Object.assign(document.createElement("span"), {classList: "project-title-span"});
-        const _projectDelBtn = Object.assign(document.createElement("button"), {classList: "delete-project-button", innerText: "✕", ariaLabel: "delete"});
+        const _projectTitle = Object.assign(document.createElement("span"), { classList: "project-title-span" });
+        const _projectDelBtn = Object.assign(document.createElement("button"), { classList: "delete-project-button", innerText: "✕", ariaLabel: "delete" });
 
         _projectTitle.textContent = this.title;
         _projectTitleNode.appendChild(_projectTitle);
@@ -141,21 +141,21 @@ class Project {
     }
 
     getFilteredSummaryNode(criteria) {
-        const _summaryNode = Object.assign(document.createElement("div"), {classList: "summary-node"});
+        const _summaryNode = Object.assign(document.createElement("div"), { classList: "summary-node" });
         const _projectTitle = document.createElement("h3");
         const _numDaysAhead = (criteria === "Due Today") ? 0 : (criteria === "This Week") ? 6 : (criteria === "This Month") ? 29 : -Infinity;
 
-        _projectTitle.style = "margin-bottom: 1rem;"
+        _projectTitle.style = "margin-bottom: 1rem;";
         _projectTitle.innerText = this.title;
         _summaryNode.appendChild(_projectTitle);
-        
+
         for (let _i = 0; this.taskList[_i]; _i++) {
             if (daysFromNow(this.taskList[_i].dueDate) < _numDaysAhead) {
                 const _taskToAdd = document.createElement("div");
                 const _taskName = document.createElement("p");
                 const _taskDate = document.createElement("p");
 
-                _taskToAdd.style = "display: flex; justify-content: space-between; gap: 2rem;"
+                _taskToAdd.style = "display: flex; justify-content: space-between; gap: 2rem;";
                 _taskName.innerText = this.taskList[_i].shortTitle;
                 _taskDate.innerText = formatShortDisplayDate(this.taskList[_i].dueDate);
                 _taskToAdd.appendChild(_taskName);
@@ -168,4 +168,4 @@ class Project {
     }
 }
 
-export {Task, Project};
+export { Task, Project };

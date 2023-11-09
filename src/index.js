@@ -1,6 +1,6 @@
-import {dateToDateString} from "./date-fns-wrapper";
-import {Project, Task} from "./project";
-import {storageExists, saveProject, loadAllProjects, clearStorage} from "./localstorage";
+import { dateToDateString } from "./date-fns-wrapper";
+import { Project, Task } from "./project";
+import { storageExists, saveProject, loadAllProjects, clearStorage } from "./localstorage";
 import "./style.css";
 
 const todoPage = (() => {
@@ -18,7 +18,7 @@ const todoPage = (() => {
     const projectTitle = document.getElementById("project-title");
     const projectDescription = document.getElementById("project-description");
     const projectConfirmBtn = document.getElementById("project-confirm-btn");
-    
+
     let projectList = [];                                                 // global vars
     let activeProjectIndex = 0;
     let taskToEdit = -1;
@@ -32,39 +32,39 @@ const todoPage = (() => {
         projectList = createDefaultProjectList();
     }
 
-    
+
     refreshScreen();
 
     function displayProjectTasks(project) {                                 // functions
         clearNodeChildren(projectHeaderNode);
         clearNodeChildren(todoContainerNode);
-        
+
         if (project === undefined) {
             buttonAddTask.style.display = "none";
             return;
         }
-        
+
         const _projectTaskNodes = project.getAllTasksNodes();
         const _projectHeaderSet = project.getProjectHeaderNodes();
-    
+
         for (let _i = 0; _projectHeaderSet[_i]; _i++) {
             projectHeaderNode.appendChild(_projectHeaderSet[_i]);
         }
 
         todoContainerNode.classList.remove("filtered-projects");
         todoContainerNode.classList.add("listed-projects");
-    
+
         for (let _j = 0; _projectTaskNodes[_j]; _j++) {
             todoContainerNode.appendChild(_projectTaskNodes[_j]);
         }
-        
+
         buttonAddTask.style.display = "flex";
     }
 
     function setTaskViewListeners() {
         const editProjectButton = document.querySelector("#edit-project-button");
         editProjectButton.addEventListener("click", editProjectDialog);
-        buttonAddTask.addEventListener("click", openTaskDialog);                
+        buttonAddTask.addEventListener("click", openTaskDialog);
         taskConfirmBtn.addEventListener("click", createOrEditTask);
         buttonAddProject.addEventListener("click", openProjectDialog);
         projectConfirmBtn.addEventListener("click", createOrEditProject);
@@ -115,12 +115,12 @@ const todoPage = (() => {
 
         const dashboardContainer = document.getElementById("time-filtered-container");
         dashboardContainer.addEventListener("click", makeProjectActive);
-        
+
     }
-    
+
     function displayAllProjects(projectsArray) {
         clearNodeChildren(projectContainer);
-        
+
         for (let _i = 0; projectsArray[_i]; _i++) {
             const _projectToAdd = projectsArray[_i].getProjectTitleNode();
             projectContainer.appendChild(_projectToAdd);
@@ -161,7 +161,7 @@ const todoPage = (() => {
         saveAllProjects();
         refreshScreen();
     }
-    
+
     function createOrEditProject(event) {
         event.preventDefault();
 
@@ -185,7 +185,7 @@ const todoPage = (() => {
         taskDueDate.value = dateToDateString(Date.now());
         taskPriority.value = "medium-priority";
         taskToEdit = -1;
-        
+
         addTaskDialog.showModal();
     }
 
@@ -205,7 +205,7 @@ const todoPage = (() => {
         saveProject(activeProjectIndex, projectList[activeProjectIndex]);
         refreshScreen();
     }
-    
+
     function createOrEditTask(event) {
         event.preventDefault();
 
@@ -218,8 +218,8 @@ const todoPage = (() => {
             projectList[activeProjectIndex].taskList[taskToEdit].title = taskTitle.value;
             projectList[activeProjectIndex].taskList[taskToEdit].dueDate = new Date(`${taskDueDate.value}T00:00`);
             projectList[activeProjectIndex].taskList[taskToEdit].priority = taskPriority.value;
-        }        
-        
+        }
+
         saveProject(activeProjectIndex, projectList[activeProjectIndex]);
         refreshScreen();
         addTaskDialog.close();
@@ -262,7 +262,7 @@ const todoPage = (() => {
         else {
             displayProjectTasks(projectList[activeProjectIndex]);
             setTaskViewListeners();
-        }        
+        }
     }
 
     function makeProjectActive(event) {

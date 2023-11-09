@@ -1,4 +1,4 @@
-import {Project, Task} from "./project";
+import { Project, Task } from "./project";
 
 function storageExists() {
     if (window.localStorage.length > 0) {
@@ -20,7 +20,7 @@ function clearStorage() {
 function loadAllProjects() {
     const _projectList = [];
 
-    for (let _i=0; _i < window.localStorage.length; _i++) {
+    for (let _i = 0; _i < window.localStorage.length; _i++) {
         const _objectProperties = JSON.parse(window.localStorage.getItem(_i));
         const _project = Object.assign(new Project(), _objectProperties);
 
@@ -35,4 +35,4 @@ function loadAllProjects() {
     return _projectList;
 }
 
-export {storageExists, saveProject, loadAllProjects, clearStorage};
+export { storageExists, saveProject, loadAllProjects, clearStorage };
