@@ -35,6 +35,28 @@ body {
     }
 }
 
+header {
+    background-color: rgb(35, 35, 109);
+    color:aliceblue;
+    display: flex;
+}
+
+.header-title {
+    margin: 4px auto;
+}
+
+button {
+    font-size: inherit;
+    color: aliceblue;
+    background-color: rgb(60, 60, 145);
+    border-color: rgb(35, 35, 109);
+    padding: 0.1em 0.3em;
+    border-radius: 3px;
+    display: flex;
+    flex-wrap: wrap;
+    place-content: center;
+}
+
 a {
     color: inherit;
 }
@@ -45,16 +67,6 @@ li {
 
 li.selected {
     font-style: italic;
-}
-
-header {
-    background-color: rgb(35, 35, 109);
-    color:aliceblue;
-    display: flex;
-}
-
-.header-title {
-    margin: 4px auto;
 }
 
 nav {
@@ -141,18 +153,6 @@ main {
     align-items: center;
     justify-content: space-between;
     gap: 0.6rem;
-}
-
-button {
-    font-size: inherit;
-    color: aliceblue;
-    background-color: rgb(60, 60, 145);
-    border-color: rgb(35, 35, 109);
-    padding: 0.1em 0.3em;
-    border-radius: 3px;
-    display: flex;
-    flex-wrap: wrap;
-    place-content: center;
 }
 
 .todo-title {

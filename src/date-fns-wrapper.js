@@ -3,29 +3,29 @@ import isFuture from "date-fns/isFuture";
 import format from "date-fns/format";
 
 function daysFromNow(date) {
-    const resultString = formatDistanceToNowStrict(date, {unit: "day", roundingMethod: "ceil"});
+    const _resultString = formatDistanceToNowStrict(date, {unit: "day", roundingMethod: "ceil"});
     if (isFuture(date)) {
-        return +resultString.slice(0, resultString.indexOf(" "));
+        return +_resultString.slice(0, _resultString.indexOf(" "));
     }
     else {
-        return (0 - resultString.slice(0, resultString.indexOf(" ")));
+        return (0 - _resultString.slice(0, _resultString.indexOf(" ")));
     }
     
 }
 
 function formatDisplayedDate(date) {
-    const formattedDate = format(date, "MM/dd/yyyy");
-    return formattedDate;
+    const _formattedDate = format(date, "MM/dd/yyyy");
+    return _formattedDate;
 }
 
 function formatShortDisplayDate(date) {
-    const formattedDate = format(date, "MM/dd");
-    return formattedDate;
+    const _formattedDate = format(date, "MM/dd");
+    return _formattedDate;
 }
 
 function dateToDateString(date) {
-    const formattedDate = format(date, "yyyy-MM-dd");
-    return formattedDate;
+    const _formattedDate = format(date, "yyyy-MM-dd");
+    return _formattedDate;
 }
 
 export {daysFromNow, formatDisplayedDate, formatShortDisplayDate, dateToDateString};
