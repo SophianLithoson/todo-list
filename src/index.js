@@ -18,27 +18,21 @@ const todoPage = (() => {
     const projectTitle = document.getElementById("project-title");
     const projectDescription = document.getElementById("project-description");
     const projectConfirmBtn = document.getElementById("project-confirm-btn");
-
-    const projectList = [];                                                 // global vars
+    
+    let projectList = [];                                                 // global vars
     let activeProject = 0;
     let taskToEdit = -1;
     let projectToEdit = -1;
 
-    const defaultDueDate = new Date(2023, 11, 30);
-    const defaultProject = new Project("Default", "This is the default project");
+    if (storageExists()) {
+        projectList = loadAllProjects();
+    }
 
-    const testTask = new Task("Test Task", defaultDueDate, "medium-priority");
-    defaultProject.addTask(testTask);
-    const testTaskTwo = new Task("Test Task 2", defaultDueDate, "high-priority");
-    defaultProject.addTask(testTaskTwo);
-    projectList.push(defaultProject);
+    else {
+        projectList = createDefaultProjectList();
+    }
 
     
-
-    console.log(JSON.stringify(projectList[activeProject]));
-    saveProject(activeProject, projectList[activeProject]);
-    const testRecoveredProjects = loadAllProjects();
-    projectList.push(testRecoveredProjects[0]);
     refreshScreen();
 
     function displayProjectTasks(project) {                                 // functions
@@ -311,5 +305,20 @@ const todoPage = (() => {
             allSummaryNodes.item(_i).value = _i;
             allSummaryNodes.item(_i).addEventListener("click", makeProjectActive);
         }
+    }
+
+    function createDefaultProjectList() {
+        const _projectList = [];
+        const _defaultProject = new Project("Default", "This is the default project. Click the pencil above to edit.");
+        const _firstTask = new Task("Low Priority", new Date(2024, 5, 4), "low-priority");
+        const _secondTask = new Task("Medium Priority, due soon", new Date(Date.now()), "medium-priority");
+        const _thirdTask = new Task("High priority, past due date", new Date(2023, 9, 30), "high-priority");
+
+        _defaultProject.addTask(_firstTask);
+        _defaultProject.addTask(_secondTask);
+        _defaultProject.addTask(_thirdTask);
+        _projectList.push(_defaultProject);
+
+        return _projectList;
     }
 })();
